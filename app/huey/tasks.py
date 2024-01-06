@@ -14,7 +14,7 @@ def run_program(email, courseNumber, runTime):
     start_time = time.time()
     stop_time = start_time + run_time_sec
 
-    send_confirmation_email(email, courseNumber, int(runTime), int(stop_time))
+    send_confirmation_email(email, courseNumber, int(runTime))
 
     runs = 0 # each run is 2 minutes
 
@@ -22,7 +22,7 @@ def run_program(email, courseNumber, runTime):
 
         #send check email every 30 minutes
         if (runs % 15 == 0):
-            check_email(email, courseNumber, int(runTime))
+            check_email(email, courseNumber, int(runTime), int(stop_time))
 
         print(courseNumber)
         # Create a new instance of the Chrome driver
@@ -103,7 +103,7 @@ def check_email(email, courseNumber, duration, stopTime):
     msg['Subject'] = f"{email} is watching ICS {courseNumber}"
     msg['From'] = sender_email
     msg['To'] = receiver_email
-    msg.set_content(f"{email} is watching ICS {courseNumber} as of {get_time()}\nWatch duration: {duration} minute(s)\nRemaining time: {int(stopTime-int(time.time()))/60} minute(s)")
+    msg.set_content(f"{email} is watching ICS {courseNumber} as of {get_time()}\nWatch duration: {duration} minute(s)\nRemaining time: {int((stopTime-int(time.time()))/60)} minute(s)")
 
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
