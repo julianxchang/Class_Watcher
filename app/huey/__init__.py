@@ -2,7 +2,7 @@ import logging
 
 from huey import SqliteHuey
 
-run = SqliteHuey(filename="C:\\Users\\julia\\Documents\\testapp\\app\\huey.db")
+run = SqliteHuey(filename="C:\\Users\\julia\\Documents\\UCI_Class_Watcher\\app\\huey.db")
 
 logging.getLogger("huey").setLevel(logging.DEBUG)
 
