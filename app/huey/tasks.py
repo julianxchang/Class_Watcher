@@ -1,7 +1,7 @@
 from . import run
 
 @run.task()
-def run_program(email, courseNumber, run_time):
+def run_program(email, courseNumber, runTime):
     from selenium import webdriver
     from selenium.webdriver.chrome.service import Service
     from webdriver_manager.chrome import ChromeDriverManager
@@ -9,12 +9,12 @@ def run_program(email, courseNumber, run_time):
     from selenium.webdriver.support.ui import Select
     import time
 
-    run_time = int(run_time) * 60 # calculate number of seconds in given minutes
+    run_time_sec = int(runTime) * 60 # calculate number of seconds in given minutes
 
     start_time = time.time()
-    stop_time = start_time + run_time
+    stop_time = start_time + run_time_sec
 
-    send_confirmation_email(courseNumber, email)
+    send_confirmation_email(email, courseNumber, int(runTime))
 
     runs = 0 # each run is 2 minutes
 
@@ -22,7 +22,7 @@ def run_program(email, courseNumber, run_time):
 
         #send check email every 30 minutes
         if (runs % 15 == 0):
-            check_email(email, courseNumber)
+            check_email(email, courseNumber, int(runTime))
 
         print(courseNumber)
         # Create a new instance of the Chrome driver
@@ -83,7 +83,7 @@ def run_program(email, courseNumber, run_time):
         runs += 1
     return None
 
-def check_email(email, courseNumber):
+def check_email(email, courseNumber, duration):
     from email.message import EmailMessage
     import smtplib, ssl
     from dotenv import load_dotenv
@@ -102,7 +102,7 @@ def check_email(email, courseNumber):
     msg['Subject'] = f"{email} is watching ICS {courseNumber}"
     msg['From'] = sender_email
     msg['To'] = receiver_email
-    msg.set_content(f"{email} is watching ICS {courseNumber} as of {get_time()}")
+    msg.set_content(f"{email} is watching ICS {courseNumber} as of {get_time()}\nWatch duration: {duration} minute(s)")
 
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
@@ -121,7 +121,7 @@ def get_time(): # New York Timezone
     return current_time
 
 
-def send_confirmation_email(courseNumber, email):
+def send_confirmation_email(email, courseNumber, duration):
     from email.message import EmailMessage
     import smtplib, ssl
     from dotenv import load_dotenv
@@ -140,7 +140,7 @@ def send_confirmation_email(courseNumber, email):
     msg['Subject'] = f"Successfully started watching ICS {courseNumber}"
     msg['From'] = sender_email
     msg['To'] = receiver_email
-    msg.set_content(f"You will be notified when a spot opens up.")
+    msg.set_content(f"You will be notified when a spot opens up.\nWatch duration: {duration} minute(s)")
 
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
@@ -155,7 +155,6 @@ def send_email(classCode, courseNumber, email):
     from dotenv import load_dotenv
     import os
 
-
     port = 465  # For SSL
     smtp_server = "smtp.gmail.com"
     sender_email = "uciclasswatcher@gmail.com"  # Enter your address
@@ -169,7 +168,7 @@ def send_email(classCode, courseNumber, email):
     msg['Subject'] = f"SPOT OPEN IN ICS {courseNumber}"
     msg['From'] = sender_email
     msg['To'] = receiver_email
-    msg.set_content(f"SPOT OPEN IN ICS {courseNumber} AS OF {get_time()} \nClass code: {classCode} \nDon't forget to enroll in all coclasses!")
+    msg.set_content(f"SPOT OPEN IN ICS {courseNumber} AS OF {get_time()}\nClass code: {classCode}\nDon't forget to enroll in all coclasses!")
 
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
