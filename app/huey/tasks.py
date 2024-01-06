@@ -114,7 +114,7 @@ def send_confirmation_email(courseNumber, email):
         print("Email Sent")
 
 
-def send_email(courseNumber, email):
+def send_email(classCode, courseNumber, email):
     from email.message import EmailMessage
     import smtplib, ssl
     from dotenv import load_dotenv
