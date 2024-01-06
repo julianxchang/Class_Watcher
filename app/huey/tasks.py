@@ -78,8 +78,8 @@ def run_program(email, courseNumber, runTime):
                 #pass
             finally:
                 i += 1
-        time.sleep(120) # wait 10 minutes before checking website again
         driver.quit()
+        time.sleep(120) # wait 10 minutes before checking website again
         runs += 1
     return None
 
