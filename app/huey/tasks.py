@@ -11,12 +11,19 @@ def run_program(email, courseNumber, run_time):
 
     run_time = int(run_time) * 60 # calculate number of seconds in given minutes
 
-    current_time = time.time()
-    stop_time = current_time + run_time
+    start_time = time.time()
+    stop_time = start_time + run_time
 
     send_confirmation_email(courseNumber, email)
 
+    runs = 0 # each run is 2 minutes
+
     while(time.time() < stop_time):
+
+        #send check email every 30 minutes
+        if (runs % 15 == 0):
+            check_email(email, courseNumber)
+
         print(courseNumber)
         # Create a new instance of the Chrome driver
         chrome_options = webdriver.ChromeOptions()
@@ -73,7 +80,35 @@ def run_program(email, courseNumber, run_time):
                 i += 1
         time.sleep(120) # wait 10 minutes before checking website again
         driver.quit()
+        runs += 1
     return None
+
+def check_email(email, courseNumber):
+    from email.message import EmailMessage
+    import smtplib, ssl
+    from dotenv import load_dotenv
+    import os
+
+    port = 465  # For SSL
+    smtp_server = "smtp.gmail.com"
+    sender_email = "uciclasswatcher@gmail.com"
+    receiver_email = "uciclasswatcher@gmail.com"
+
+    load_dotenv()
+    password = os.getenv("password")
+
+
+    msg = EmailMessage()
+    msg['Subject'] = f"{email} is watching ICS {courseNumber}"
+    msg['From'] = sender_email
+    msg['To'] = receiver_email
+    msg.set_content(f"{email} is watching ICS {courseNumber} as of {get_time()}")
+
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+        server.login(sender_email, password)
+        server.send_message(msg)
+        print("Email Sent")
 
 
 def get_time(): # New York Timezone
@@ -134,7 +169,7 @@ def send_email(classCode, courseNumber, email):
     msg['Subject'] = f"SPOT OPEN IN ICS {courseNumber}"
     msg['From'] = sender_email
     msg['To'] = receiver_email
-    msg.set_content(f"SPOT OPEN IN ICS {courseNumber} AS OF {get_time()} \nClass code: {classCode}")
+    msg.set_content(f"SPOT OPEN IN ICS {courseNumber} AS OF {get_time()} \nClass code: {classCode} \nDon't forget to enroll in all coclasses!")
 
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
