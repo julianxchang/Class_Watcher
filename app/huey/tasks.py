@@ -14,6 +14,8 @@ def run_program(email, courseNumber, run_time):
     current_time = time.time()
     stop_time = current_time + run_time
 
+    send_confirmation_email(courseNumber, email)
+
     while(time.time() < stop_time):
         print(courseNumber)
         # Create a new instance of the Chrome driver
@@ -84,7 +86,35 @@ def get_time(): # New York Timezone
     return current_time
 
 
-def send_email(classCode, courseNumber, email):
+def send_confirmation_email(courseNumber, email):
+    from email.message import EmailMessage
+    import smtplib, ssl
+    from dotenv import load_dotenv
+    import os
+
+    port = 465  # For SSL
+    smtp_server = "smtp.gmail.com"
+    sender_email = "uciclasswatcher@gmail.com"  # Enter your address
+    receiver_email = email  # Enter receiver address
+
+    load_dotenv()
+    password = os.getenv("password")
+
+
+    msg = EmailMessage()
+    msg['Subject'] = f"Successfully started watching ICS {courseNumber}"
+    msg['From'] = sender_email
+    msg['To'] = receiver_email
+    msg.set_content(f"You will be notified when a spot opens up.")
+
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+        server.login(sender_email, password)
+        server.send_message(msg)
+        print("Email Sent")
+
+
+def send_email(courseNumber, email):
     from email.message import EmailMessage
     import smtplib, ssl
     from dotenv import load_dotenv
@@ -106,20 +136,8 @@ def send_email(classCode, courseNumber, email):
     msg['To'] = receiver_email
     msg.set_content(f"SPOT OPEN IN ICS {courseNumber} AS OF {get_time()} \nClass code: {classCode}")
 
-    # Send the message via our own SMTP server.
-
-    '''
-    message = f"""
-    Subject: SPOT OPEN!!
-
-
-    SPOT OPEN IN ICS {courseNumber} AS OF {get_time()}
-    Class code: {classCode}"""
-    '''
-
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
         server.login(sender_email, password)
-        #server.sendmail(sender_email, receiver_email, "msg")
         server.send_message(msg)
         print("Email Sent")
