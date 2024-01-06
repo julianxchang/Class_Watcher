@@ -54,7 +54,7 @@ def run_program(email, courseNumber, run_time):
                                 rows = table[j].find_elements(By.TAG_NAME, "td")
                                 j += 1
                                 print(rows[1].text)
-                                if rows[1].text == "Lec" and rows[-1].text == "FULL":
+                                if rows[1].text == "Lec" and rows[-1].text != "FULL":
                                     classCode = rows[0].text
                                     try:
                                         send_email(classCode, courseNumber, email)
@@ -69,7 +69,7 @@ def run_program(email, courseNumber, run_time):
                 #pass
             finally:
                 i += 1
-        time.sleep(10) # wait 10 minutes before checking website again
+        time.sleep(120) # wait 10 minutes before checking website again
         driver.quit()
     return None
 
