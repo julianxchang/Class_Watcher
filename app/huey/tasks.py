@@ -14,7 +14,7 @@ def run_program(email, courseNumber, runTime):
     start_time = time.time()
     stop_time = start_time + run_time_sec
 
-    send_confirmation_email(email, courseNumber, int(runTime))
+    send_confirmation_email(email, courseNumber, int(runTime), int(stop_time))
 
     runs = 0 # each run is 2 minutes
 
@@ -53,7 +53,7 @@ def run_program(email, courseNumber, runTime):
                 print(text)
                 if "I&C Sci" in text and courseNumber in text:
                     j = i + 1
-                    while(True):
+                    while(True): # need to update to stop when (currently uses exception to check)
                         try:
                             checkCourseTitle = table[j].find_element(By.CLASS_NAME, "CourseTitle")
                             break
@@ -83,11 +83,12 @@ def run_program(email, courseNumber, runTime):
         runs += 1
     return None
 
-def check_email(email, courseNumber, duration):
+def check_email(email, courseNumber, duration, stopTime):
     from email.message import EmailMessage
     import smtplib, ssl
     from dotenv import load_dotenv
     import os
+    import time
 
     port = 465  # For SSL
     smtp_server = "smtp.gmail.com"
@@ -102,7 +103,7 @@ def check_email(email, courseNumber, duration):
     msg['Subject'] = f"{email} is watching ICS {courseNumber}"
     msg['From'] = sender_email
     msg['To'] = receiver_email
-    msg.set_content(f"{email} is watching ICS {courseNumber} as of {get_time()}\nWatch duration: {duration} minute(s)")
+    msg.set_content(f"{email} is watching ICS {courseNumber} as of {get_time()}\nWatch duration: {duration} minute(s)\nRemaining time: {int(stopTime-int(time.time()))/60} minute(s)")
 
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
