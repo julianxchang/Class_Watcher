@@ -2,6 +2,13 @@ from . import run
 
 @run.task()
 def run_program(email, courseNumber, runTime):
+    import multiprocessing as mp
+    p = mp.Process(target=script, args=(email, courseNumber, runTime))
+    p.start()
+    p.join()
+
+#@run.task()
+def script(email, courseNumber, runTime):
     from selenium.webdriver.common.by import By
     from selenium.webdriver.support.ui import Select
     import time
