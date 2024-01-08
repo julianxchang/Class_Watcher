@@ -2,9 +2,6 @@ from . import run
 
 @run.task()
 def run_program(email, courseNumber, runTime):
-    from selenium import webdriver
-    from selenium.webdriver.chrome.service import Service
-    from webdriver_manager.chrome import ChromeDriverManager
     from selenium.webdriver.common.by import By
     from selenium.webdriver.support.ui import Select
     import time
@@ -19,18 +16,14 @@ def run_program(email, courseNumber, runTime):
     runs = 0 # each run is 2 minutes
 
     while(time.time() < stop_time):
-
         #send check email every 30 minutes
         if (runs % 15 == 0):
             check_email(email, courseNumber, int(runTime), int(stop_time))
 
         print(courseNumber)
-        # Create a new instance of the Chrome driver
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument('--headless')
-        chrome_options.add_argument('--no-sandbox')
-        chrome_options.add_argument('--disable-dev-shm-usage')
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+
+        driver = create_chrome_driver()
+
         # go to UCI Webreg
         driver.get("https://www.reg.uci.edu/perl/WebSoc")
 
@@ -38,9 +31,8 @@ def run_program(email, courseNumber, runTime):
         select = Select(driver.find_element("name", "Dept"))
 
         # NEED TO UPDATE CODE SO YOU CAN CHOOSE WHICH SCHOOL
-        #select.select_by_index(71)
         select.select_by_value("I&C SCI")
-        btn = driver.find_element("name", "Submit").click()
+        driver.find_element("name", "Submit").click()
 
         table = driver.find_elements(By.XPATH, ".//div[@class='course-list']/table/tbody/tr")
         i = 0
@@ -78,10 +70,24 @@ def run_program(email, courseNumber, runTime):
                 #pass
             finally:
                 i += 1
+        driver.close()
         driver.quit()
         time.sleep(120) # wait 10 minutes before checking website again
         runs += 1
     return None
+
+
+def create_chrome_driver():
+    from selenium import webdriver
+    from selenium.webdriver.chrome.service import Service
+    from webdriver_manager.chrome import ChromeDriverManager
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+    return driver
+
 
 def check_email(email, courseNumber, duration, stopTime):
     from email.message import EmailMessage
