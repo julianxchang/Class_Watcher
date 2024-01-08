@@ -50,12 +50,12 @@ def script(email, courseNumber, runTime):
                 checkRow = table[i].find_element(By.CLASS_NAME, "CourseTitle")
                 text = checkRow.text
                 print(text)
-                if "I&C Sci" in text and courseNumber in text:
+                if "I&C Sci" in text and " " + courseNumber + " " in text:
                     j = i + 1
                     while(True): # need to update to stop when (currently uses exception to check)
                         try:
                             checkCourseTitle = table[j].find_element(By.CLASS_NAME, "CourseTitle")
-                            break
+                            break # if course title exists it means we've reached the next course, therefore break out of while loop
                         except Exception as e: # getting error here means we still haven't reached next course
                             print(e)
                             try:
@@ -64,14 +64,10 @@ def script(email, courseNumber, runTime):
                                 print(rows[1].text)
                                 if rows[1].text == "Lec" and rows[-1].text != "FULL":
                                     classCode = rows[0].text
-                                    try:
-                                        send_email(classCode, courseNumber, email)
-                                    except Exception as e:
-                                        print(e)
+                                    send_email(classCode, courseNumber, email)
                                 found = True
                             except Exception as e:
                                 print(e)
-
             except Exception as exception:
                 print(exception)
                 #pass
@@ -81,6 +77,7 @@ def script(email, courseNumber, runTime):
         driver.quit()
         time.sleep(120) # wait 10 minutes before checking website again
         runs += 1
+    complete_email(email, courseNumber, int(runTime))
     return None
 
 
@@ -94,6 +91,35 @@ def create_chrome_driver():
     chrome_options.add_argument('--disable-dev-shm-usage')
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
     return driver
+
+
+def complete_email(email, courseNumber, duration):
+    from email.message import EmailMessage
+    import smtplib, ssl
+    from dotenv import load_dotenv
+    import os
+    import time
+
+    port = 465  # For SSL
+    smtp_server = "smtp.gmail.com"
+    sender_email = "uciclasswatcher@gmail.com"
+    receiver_email = "uciclasswatcher@gmail.com"
+
+    load_dotenv()
+    password = os.getenv("password")
+
+
+    msg = EmailMessage()
+    msg['Subject'] = f"{email} finished watching {courseNumber}"
+    msg['From'] = sender_email
+    msg['To'] = receiver_email
+    msg.set_content(f"{email} finished watching ICS {courseNumber}.\nWatch duration: {duration} minute(s)")
+
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+        server.login(sender_email, password)
+        server.send_message(msg)
+        print("Email Sent")
 
 
 def check_email(email, courseNumber, duration, stopTime):
