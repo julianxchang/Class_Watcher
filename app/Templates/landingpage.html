@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html>
-    <head>
-    </head>
-    <body>
-        <p>Success! Check your email for when a spot opens up!</p><br>
-        <form action = "/home">
-            <input type="submit" value="Watch another class" name="action">
-        </form>
-    </body>
-</html>
+<head>
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
+</head>
+<body>
+    <form action="/home">
+      <div class="form-complete">
+        <div class="title">Success</div>
+        <div class="subtitle">You will receive an email when a spot opens up!</div>
+        <button class="submit" type="submit" value="Watch Another Class" name="action">Watch Another Class</button>
+      </div>
+    </form>
+  </body>
