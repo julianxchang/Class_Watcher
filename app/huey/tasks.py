@@ -62,7 +62,7 @@ def script(email, courseNumber, runTime):
                                 rows = table[j].find_elements(By.TAG_NAME, "td")
                                 j += 1
                                 print(rows[1].text)
-                                if rows[1].text == "Lec" and rows[-1].text != "FULL":
+                                if rows[1].text == "Lec" and rows[-1].text == "OPEN":
                                     classCode = rows[0].text
                                     send_email(classCode, courseNumber, email)
                                 found = True
