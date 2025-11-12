@@ -1,3 +1,6 @@
+
+FROM debian:stable-slim
+
 ENV VENV_PATH=/opt/venv
 ENV PATH="$VENV_PATH/bin:$PATH"
 
@@ -21,5 +24,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Start Supervisor
 CMD ["supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
