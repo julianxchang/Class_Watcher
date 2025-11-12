@@ -1,27 +1,15 @@
+FROM python:3.13-slim
 
-FROM debian:stable-slim
-
-ENV VENV_PATH=/opt/venv
-ENV PATH="$VENV_PATH/bin:$PATH"
-
-RUN apt-get update && \
-    apt-get install -y \
-        python3 \
-        python3-venv \
-        python3-pip \
-        supervisor \
-        curl \
-        git \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN python3 -m venv $VENV_PATH && \
-    pip install --upgrade pip setuptools wheel
-
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 WORKDIR /app
-COPY . /app
 
+RUN apt-get update && apt-get install -y chromium chromium-driver && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY . .
 
-CMD ["supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+# Railway will override this with Start Command per service
+CMD ["python", "-m", "run"]
