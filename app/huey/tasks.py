@@ -58,6 +58,7 @@ def check_courses():
                                         found[num].append(classCode)
                                     else:
                                         found[num] = [classCode]
+                            j += 1
                         break
             except Exception as exception:
                 pass
@@ -68,6 +69,7 @@ def check_courses():
     finally:
         if driver:
             try:
+                driver.close()
                 driver.quit()
             except Exception as e:
                 print(f"Error occurred while quitting driver: {e}")
