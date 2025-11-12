@@ -1,13 +1,11 @@
 from app.huey import run, crontab
 from app.utils import create_chrome_driver, get_watched_courses, notify_students
-import time
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
+import re, time, gc
 
 @run.periodic_task(crontab(minute='*/2'))   # run every 10 minutes
 def check_courses():
-    from selenium.webdriver.common.by import By
-    from selenium.webdriver.support.ui import Select
-    import re
-
     driver = None
     found = {}
 
@@ -75,6 +73,7 @@ def check_courses():
                 driver.quit()
             except Exception as e:
                 print(f"Error occurred while quitting driver: {e}")
+        gc.collect()
     if found:
         notify_students(found)
 

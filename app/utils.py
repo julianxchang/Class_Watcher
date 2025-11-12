@@ -1,19 +1,23 @@
+from selenium import webdriver
+from dotenv import load_dotenv
+import os, time, resend
+from app.db import get_db_conn
+
 def create_chrome_driver():
-    from selenium import webdriver
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless=new') # Run Chrome in headless mode (commnet this line to see browser)
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--window-size=1920,1080")
+    chrome_options.add_argument("--incognito")
+    chrome_options.add_argument("--disable-application-cache")
+    chrome_options.add_argument("--disk-cache-size=0")
+    chrome_options.add_argument("--media-cache-size=0")
     driver = webdriver.Chrome(options=chrome_options)
     return driver
 
 def send_confirmation_email(email, courseNumber):
-    import resend
-    from dotenv import load_dotenv
-    import os
-
     load_dotenv()
     resend.api_key = os.getenv("RESEND_API")
 
@@ -25,10 +29,6 @@ def send_confirmation_email(email, courseNumber):
 
 
 def send_email(classCodes, courseNumber, email):
-    import resend
-    from dotenv import load_dotenv
-    import os
-
     load_dotenv()
     resend.api_key = os.getenv("RESEND_API")
 
@@ -43,10 +43,6 @@ def send_email(classCodes, courseNumber, email):
     test_email(f"Notified {email} for ICS {courseNumber} - Class Code(s): {', '.join(classCodes)}")
 
 def test_email(message):
-    import resend
-    from dotenv import load_dotenv
-    import os
-
     load_dotenv()
     resend.api_key = os.getenv("RESEND_API")
 
@@ -60,7 +56,6 @@ def test_email(message):
     print("Email sent to admin")
 
 def get_watched_courses():
-    from app.db import get_db_conn
     conn = get_db_conn()
     cursor = conn.cursor()
 
@@ -71,8 +66,6 @@ def get_watched_courses():
     return [row[0] for row in rows]
 
 def notify_students(found: dict):
-    import time
-    from app.db import get_db_conn
     conn = get_db_conn()
     cursor = conn.cursor()
 
