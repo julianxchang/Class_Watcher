@@ -1,7 +1,8 @@
 ARG PORT=443
 FROM cypress/browsers:latest
 
-RUN apt-get install python3 -y
+# Always update package index before installing packages
+RUN apt-get update && apt-get install -y python3
 
 RUN echo $(python3 -m site --user-base)
 
@@ -13,8 +14,4 @@ RUN apt-get update && apt-get install -y python3-pip && pip install -r requireme
 
 COPY . .
 
-#RUN huey_consumer app.huey.run
-
 ENTRYPOINT ["supervisord", "-c", "supervisord.conf"]
-
-#CMD uvicorn main:app --host 0.0.0.0 --port $PORT
