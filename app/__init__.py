@@ -8,7 +8,7 @@ app = Flask(__name__, template_folder="Templates")
 def index():
     return render_template('index.html')
 
-@app.route('/run', methods = ['Get', 'POST'])
+@app.route('/run', methods=['GET', 'POST'])
 def run_code():
     if request.method == 'POST':
         email = request.form.get('email')
@@ -43,6 +43,8 @@ def run_code():
         print(email)
         print(courseNumber)
         return render_template('landingpage.html')
+
+    return render_template('index.html')
 
 @app.route('/home')
 def func():

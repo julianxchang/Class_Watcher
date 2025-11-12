@@ -1,8 +1,14 @@
 from app.huey import run, crontab
-from app.utils import create_chrome_driver, test_email, get_watched_courses, notify_students
+from app.utils import (
+    create_chrome_driver,
+    test_email,
+    get_watched_courses,
+    notify_students,
+    send_confirmation_email,
+)
 import time
 
-@run.periodic_task(crontab(minute='*/2'))   # run every 2 minutes
+@run.periodic_task(crontab(minute='*/10'))   # run every 10 minutes
 def check_courses():
     from selenium.webdriver.common.by import By
     from selenium.webdriver.support.ui import Select
@@ -65,6 +71,3 @@ def check_courses():
     driver.quit()
     if found:
         notify_students(found)
-
-# if __name__ == '__main__':
-#     check_courses()
