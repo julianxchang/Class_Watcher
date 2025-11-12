@@ -38,7 +38,7 @@ def send_email(classCodes, courseNumber, email):
     "subject": f"SPOT OPEN IN ICS {courseNumber}!",
     "html": f"<p>Class code(s): {', '.join(classCodes)}<br>Don't forget to enroll in all coclasses!</p>"})
 
-    print("Email Sent")
+    print("Email sent to student")
 
     test_email(f"Notified {email} for ICS {courseNumber} - Class Code(s): {', '.join(classCodes)}")
 
@@ -55,9 +55,9 @@ def test_email(message):
     "from": "noreply@uciclasswatcher.com",
     "to": "uciclasswatcher@gmail.com",
     "subject": "test email",
-    "html": "<p>Congrats on sending your <strong>first email</strong>!</p>"})
+    "html": "<p>Email was sent to student</p>"})
 
-    print("Email Sent")
+    print("Email sent to admin")
 
 def get_watched_courses():
     from app.db import get_db_conn
@@ -71,6 +71,7 @@ def get_watched_courses():
     return [row[0] for row in rows]
 
 def notify_students(found: dict):
+    import time
     from app.db import get_db_conn
     conn = get_db_conn()
     cursor = conn.cursor()
@@ -86,6 +87,7 @@ def notify_students(found: dict):
 
         for email in emails:
             send_email(classCodes, courseNumber, email)
+            time.sleep(1)
 
         # After notifying, remove users from watching this course
         cursor.execute("""
