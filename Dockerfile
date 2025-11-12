@@ -1,19 +1,25 @@
-FROM cypress/browsers:latest
+ENV VENV_PATH=/opt/venv
+ENV PATH="$VENV_PATH/bin:$PATH"
 
-ENV PORT=443
-ENV PATH=/root/.local/bin:$PATH
+RUN apt-get update && \
+    apt-get install -y \
+        python3 \
+        python3-venv \
+        python3-pip \
+        supervisor \
+        curl \
+        git \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install Python, pip, and supervisor
-RUN apt-get update && apt-get install -y python3 python3-pip supervisor \
-    && python3 -m pip install --upgrade pip
+RUN python3 -m venv $VENV_PATH && \
+    pip install --upgrade pip setuptools wheel
 
-# Copy requirements and install
-COPY requirements.txt .
-RUN python3 -m pip install --user -r requirements.txt \
-    && python3 -m pip install --user huey
+WORKDIR /app
+COPY . /app
 
-# Copy app
-COPY . .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Run supervisord
-ENTRYPOINT ["supervisord", "-c", "supervisord.conf"]
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Start Supervisor
+CMD ["supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
