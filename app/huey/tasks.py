@@ -15,13 +15,15 @@ def check_courses():
         driver = create_chrome_driver()
 
         driver.get("https://www.reg.uci.edu/perl/WebSoc")
-        time.sleep(2)  # wait for page to load
+        time.sleep(1)  # wait for page to load
 
         select = Select(driver.find_element("name", "Dept"))
 
         # TODO: Make it so user can select department other than ICS
         select.select_by_value("I&C SCI")
         driver.find_element("name", "Submit").click()
+
+        time.sleep(1)
 
         table = driver.find_element(By.CLASS_NAME, 'course-list').find_elements(By.TAG_NAME, "tr")
         i = 0
