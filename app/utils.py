@@ -1,7 +1,11 @@
 def create_chrome_driver():
     from selenium import webdriver
     chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('--headless') # Run Chrome in headless mode (commnet this line to see browser)
+    chrome_options.add_argument('--headless=new') # Run Chrome in headless mode (commnet this line to see browser)
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--window-size=1920,1080")
     driver = webdriver.Chrome(options=chrome_options)
     return driver
 
