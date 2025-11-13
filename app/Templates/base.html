@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}UCI Class Watcher{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/style.css') }}"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <nav>
+        <a href="{{ url_for('index') }}" class="home-link">
+          <h1>UCI Class Watcher</h1>
+        </a>
+      </nav>
+    </header>
+    <main>{% block content %} {% endblock %}</main>
+    <footer>
+      <a href="{{ url_for('changelog') }}" class="changelog-link">
+        <h1>Changelog</h1>
+      </a>
+    </footer>
+  </body>
+</html>

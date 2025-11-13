@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block title %}Success{% endblock %} {% block
+content %}
+<div class="form-complete">
+  <div class="title">Changelog</div>
+
+  <ul class="changelog">
+    <li>
+      <span class="version">v2</span>
+      <span class="date">2025-11-11</span>
+      <p>
+        Completely revamped code to scale (Previously a worker was spawned for
+        every class being watched LOL)
+      </p>
+      <p>
+        Replaced huey with celery as scheduler for better memoery management
+      </p>
+      <p>Updated code to send emails using API rather than SMTP</p>
+      <p>Updated form for better error handling</p>
+    </li>
+    <li>
+      <span class="version">v1.1</span>
+      <span class="date">2024</span>
+      <p>Long ass break</p>
+    </li>
+    <li>
+      <span class="version">v1.0</span>
+      <span class="date">2024-01-05</span>
+      <p>Initial release of UCI Class Watcher</p>
+    </li>
+  </ul>
+</div>
+{% endblock %}
