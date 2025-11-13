@@ -4,7 +4,7 @@ from selenium.webdriver.support.ui import Select
 import re, time, gc, os
 
 def run():
-    for i in range(25):
+    for i in range(8):
         print(f"Run {i+1}/25 of course checks...")
         check_courses()
         time.sleep(120)  # 2 minutes between checks
