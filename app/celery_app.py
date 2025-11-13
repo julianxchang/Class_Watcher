@@ -16,8 +16,8 @@ app.conf.timezone = 'UTC'
 app.conf.beat_schedule = {
     'check-courses-every-2-minutes': {
         'task': 'app.tasks.check_courses',
-        # 'schedule': crontab(minute='*/2'),
-        'schedule': timedelta(seconds=10),
+        'schedule': crontab(minute='*/2'),
+        #'schedule': timedelta(seconds=10),
     },
 }
 
