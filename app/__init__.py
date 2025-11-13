@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 from app.db import get_db_conn
 from app.utils import send_confirmation_email
-from app import tasks
 app = Flask(__name__, template_folder="Templates")
 
 @app.route('/')
