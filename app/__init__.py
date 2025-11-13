@@ -53,5 +53,9 @@ def run_code():
 def func():
     return render_template('index.html')
 
+@app.route('/changelog')
+def changelog():
+    return render_template('changelog.html')
+
 if __name__ == "__main__":
     app.run(debug=True, port=8000)

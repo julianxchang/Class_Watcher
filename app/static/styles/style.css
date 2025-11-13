@@ -1,11 +1,25 @@
 body {
-  align-items: center;
-  background-color: #000;
   display: flex;
-  justify-content: center;
-  height: 100vh;
+  flex-direction: column; /* stack children vertically */
+  justify-content: space-between; /* push first to top, last to bottom, main in middle */
+  min-height: 100vh; /* take full viewport height */
+  margin: 0;
+  background-color: #000;
 }
-
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center; /* center form horizontally */
+  align-items: center; /* center form vertically in its area */
+}
+nav,
+footer {
+  width: 100%; /* span full width */
+  color: white;
+  background-color: #111;
+  padding: 1px 0;
+  text-align: center;
+}
 .form {
   background-color: #15172b;
   border-radius: 20px;
@@ -14,7 +28,6 @@ body {
   padding: 20px;
   width: 320px;
 }
-
 .form-complete {
   background-color: #15172b;
   border-radius: 20px;
@@ -22,8 +35,34 @@ body {
   height: 500px;
   padding: 20px;
   width: 320px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
+/* Custom scrollbar styling for .form-complete */
+.form-complete::-webkit-scrollbar {
+  width: 8px;
+}
+
+.form-complete::-webkit-scrollbar-track {
+  background: #1a1c2e;
+  border-radius: 10px;
+}
+
+.form-complete::-webkit-scrollbar-thumb {
+  background: #3a3d55;
+  border-radius: 10px;
+}
+
+.form-complete::-webkit-scrollbar-thumb:hover {
+  background: #4a4d65;
+}
+
+/* Firefox scrollbar styling */
+.form-complete {
+  scrollbar-width: thin;
+  scrollbar-color: #3a3d55 #1a1c2e;
+}
 .title {
   color: #eee;
   font-family: sans-serif;
@@ -32,30 +71,25 @@ body {
   margin-top: 30px;
   text-align: center;
 }
-
 .subtitle {
   color: #eee;
   font-family: sans-serif;
   font-size: 16px;
   font-weight: 600;
   margin-top: 10px;
-  text-align: center
+  text-align: center;
 }
-
 .input-container {
   height: 50px;
   position: relative;
   width: 100%;
 }
-
 .ic1 {
   margin-top: 40px;
 }
-
 .ic2 {
   margin-top: 30px;
 }
-
 .input {
   background-color: #303245;
   border-radius: 12px;
@@ -68,7 +102,6 @@ body {
   padding: 4px 20px 0;
   width: 100%;
 }
-
 .cut {
   background-color: #15172b;
   border-radius: 10px;
@@ -80,20 +113,16 @@ body {
   transition: transform 200ms;
   width: 50px;
 }
-
 .cut-longer {
   width: 195px;
 }
-
 .cut-long {
-  width: 145px
+  width: 145px;
 }
-
 .input:focus ~ .cut,
 .input:not(:placeholder-shown) ~ .cut {
   transform: translateY(8px);
 }
-
 .placeholder {
   color: #65657b;
   font-family: sans-serif;
@@ -104,22 +133,18 @@ body {
   transform-origin: 0 50%;
   transition: transform 200ms, color 200ms;
   top: 19px;
-  font-size:14px;
+  font-size: 14px;
 }
-
 .input:focus ~ .placeholder,
 .input:not(:placeholder-shown) ~ .placeholder {
   transform: translateY(-30px) translateX(10px) scale(0.75);
 }
-
 .input:not(:placeholder-shown) ~ .placeholder {
   color: #808097;
 }
-
 .input:focus ~ .placeholder {
   color: #dc2f55;
 }
-
 .submit {
   background-color: #08d;
   border-radius: 12px;
@@ -130,19 +155,63 @@ body {
   font-size: 18px;
   height: 50px;
   margin-top: 38px;
-  /*outline: 0;*/
   text-align: center;
   width: 100%;
 }
-
 .submit:active {
   background-color: #06b;
 }
-
 .error-message {
   color: #ff6666;
   font-family: sans-serif;
   font-size: 14px;
   margin-top: 20px;
   text-align: center;
+}
+
+.home-link {
+  color: white;
+  text-decoration: none;
+  font-family: sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.changelog-link {
+  color: rgb(0, 110, 255);
+  text-decoration: none;
+  font-family: sans-serif;
+  font-size: 5px;
+  font-weight: 400;
+}
+
+.changelog {
+  list-style: none;
+  padding: 0;
+}
+
+.changelog li {
+  padding: 1rem;
+  border-left: 3px solid #4caf50;
+  margin-bottom: 1rem;
+  background-color: #2a2a2a;
+  border-radius: 5px;
+  color: #f5f5f5;
+}
+
+.changelog li .version {
+  font-weight: bold;
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+  color: #dbdbdb;
+}
+
+.changelog li .date {
+  color: #aaaaaa;
+  font-size: 0.9rem;
+}
+
+.changelog li p {
+  margin: 0.5rem 0 0 0;
+  color: #ddd;
 }
