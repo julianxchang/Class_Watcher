@@ -1,11 +1,14 @@
-# from app.huey import run, crontab
-from app.celery_app import app
 from app.utils import create_chrome_driver, get_watched_courses, notify_students
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 import re, time, gc, os
 
-@app.task
+def run():
+    for i in range(25):
+        print(f"Run {i+1}/25 of course checks...")
+        check_courses()
+        time.sleep(120)  # 2 minutes between checks
+
 def check_courses():
     pid = os.getpid()
     print(f"[PID {pid}] Starting check_courses task...")
@@ -81,3 +84,6 @@ def check_courses():
 
     print("Course check complete.")
     return True
+
+if __name__ == "__main__":
+    run()  # Runs 30 times with 10-second intervals (5 minutes total)
