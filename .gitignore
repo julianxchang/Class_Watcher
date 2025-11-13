@@ -40,3 +40,7 @@ screenshots/
 
 .DS_Store
 Thumbs.db
+
+huey.db
+huey.db-shm
+huey.db-wal
