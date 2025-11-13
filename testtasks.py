@@ -8,6 +8,8 @@ def run():
     while(True):
         print(f"Run {run+1}")
         check_courses()
+        run += 1
+        time.sleep(120)  # 120 seconds between checks
 
 def check_courses():
     pid = os.getpid()
