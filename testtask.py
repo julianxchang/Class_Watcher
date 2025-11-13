@@ -3,6 +3,12 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 import re, time, gc, os
 
+def run_check_courses():
+    for i in range(4):
+        print(f"Run {i+1}/4 of course checks...")
+        check_courses()
+        time.sleep(30)
+
 def check_courses():
     pid = os.getpid()
     print(f"[PID {pid}] Starting check_courses task...")
@@ -80,4 +86,4 @@ def check_courses():
     return True
 
 if __name__ == "__main__":
-    check_courses()
+    run_check_courses()  # Runs 30 times with 10-second intervals (5 minutes total)
