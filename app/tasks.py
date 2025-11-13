@@ -4,10 +4,10 @@ from selenium.webdriver.support.ui import Select
 import re, time, gc, os
 
 def run():
-    for i in range(8):
-        print(f"Run {i+1}/25 of course checks...")
+    for i in range(4):
+        print(f"Run {i+1}/4 of course checks...")
         check_courses()
-        time.sleep(120)  # 2 minutes between checks
+        time.sleep(30)
 
 def check_courses():
     pid = os.getpid()
