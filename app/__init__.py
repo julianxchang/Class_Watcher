@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from app.db import get_db_conn
 from app.utils import send_confirmation_email
+import re
 app = Flask(__name__, template_folder="Templates")
 
 @app.route('/')
@@ -12,6 +13,9 @@ def run_code():
     if request.method == 'POST':
         email = request.form.get('email')
         courseNumber = request.form.get('course_number')
+
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            return render_template('index.html', error="Invalid email address")
 
         conn = get_db_conn()
         cursor = conn.cursor()

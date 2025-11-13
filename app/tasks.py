@@ -31,18 +31,17 @@ def check_courses():
         tablelen = len(table)
 
         watched_courses = get_watched_courses()
-
         print(f"Watching courses: {watched_courses}")
 
         found = {}
         while (i < tablelen):
             try:
                 checkRow = table[i].find_element(By.CLASS_NAME, "CourseTitle")
-                text = checkRow.text
-                for num in watched_courses:
-                    pattern = rf"I&C Sci\s+{num}\s+"
+                text = checkRow.text.lower()
+                for course in watched_courses:
+                    pattern = rf"i&c sci\s+{course.lower()}\s+"
                     if re.search(pattern, text):
-                        print(f">>> Matched course: I&C Sci {num}")
+                        print(f">>> Matched course: I&C Sci {course}")
                         j = i + 1   # start searching to see if class if FULL from next row
                         while j < tablelen:
                             course_titles = table[j].find_elements(By.CLASS_NAME, "CourseTitle")
@@ -57,10 +56,10 @@ def check_courses():
                                 if len(rows) > 10 and rows[1].text == "Lec" and rows[-1].text == "OPEN":
                                     classCode = rows[0].text
                                     print(f"Found open lecture: {classCode}")
-                                    if num in found:
-                                        found[num].append(classCode)
+                                    if course in found:
+                                        found[course].append(classCode)
                                     else:
-                                        found[num] = [classCode]
+                                        found[course] = [classCode]
                             j += 1
                         break
             except Exception as exception:

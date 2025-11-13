@@ -40,8 +40,6 @@ def send_email(classCodes, courseNumber, email):
 
     print("Email sent to student")
 
-    test_email(f"Notified {email} for ICS {courseNumber} - Class Code(s): {', '.join(classCodes)}")
-
 def test_email(message):
     load_dotenv()
     resend.api_key = os.getenv("RESEND_API")

@@ -138,3 +138,11 @@ body {
 .submit:active {
   background-color: #06b;
 }
+
+.error-message {
+  color: #ff6666;
+  font-family: sans-serif;
+  font-size: 14px;
+  margin-top: 20px;
+  text-align: center;
+}
