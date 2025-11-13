@@ -1,18 +1,18 @@
 {% extends "base.html" %} {% block title %}Success{% endblock %} {% block
 content %}
 <div class="form-complete">
-  <div class="title">Changelog</div>
+  <div class="title">Changlog</div>
 
   <ul class="changelog">
     <li>
       <span class="version">v2</span>
       <span class="date">2025-11-11</span>
       <p>
-        Completely revamped code to scale (Previously a worker was spawned for
+        Revamped code to scale (Previously a worker was spawned for
         every class being watched LOL)
       </p>
       <p>
-        Replaced huey with celery as scheduler for better memoery management
+        Replaced huey with celery as scheduler for better memory management
       </p>
       <p>Updated code to send emails using API rather than SMTP</p>
       <p>Updated form for better error handling</p>
