@@ -9,3 +9,4 @@ supervisor
 huey
 psycopg2-binary
 resend
+celery[redis]

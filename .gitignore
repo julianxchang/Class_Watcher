@@ -44,3 +44,6 @@ Thumbs.db
 huey.db
 huey.db-shm
 huey.db-wal
+celerybeat-schedule-wal
+celerybeat-schedule-shm
+celerybeat-schedule
