@@ -4,13 +4,13 @@ content %}
   <div class="form">
     <div class="title">Welcome</div>
     <div class="subtitle">
-      Enter information below to start watching an ICS class
+      Enter information below to start watching any ICS or COMPSCI class
     </div>
     <div class="input-container ic1">
       <input
         id="email"
         class="input"
-        type="text"
+        type="email"
         placeholder=" "
         name="email"
         required
@@ -19,6 +19,23 @@ content %}
       <label for="email" class="placeholder">Email</label>
     </div>
     <div class="input-container ic2">
+      <select
+        id="department"
+        class="input"
+        name="department"
+        required
+        onchange="this.setAttribute('data-selected', this.value !== '')"
+      >
+        <option value="" disabled selected hidden></option>
+        <option value="I&C SCI">
+          I&C SCI (Information & Computer Science)
+        </option>
+        <option value="COMPSCI">COMPSCI (Computer Science)</option>
+      </select>
+      <div class="cut cut-medium"></div>
+      <label for="department" class="placeholder">Department</label>
+    </div>
+    <div class="input-container ic3">
       <input
         id="course_number"
         class="input"
@@ -27,9 +44,9 @@ content %}
         name="course_number"
         required
       />
-      <div class="cut cut-longer"></div>
+      <div class="cut cut-long"></div>
       <label for="course_number" class="placeholder"
-        >Course Number (enter 33 for ICS 33)</label
+        >Course Number (e.g., 33)</label
       >
     </div>
     <button class="submit" type="submit" value="Start Watching" name="action">

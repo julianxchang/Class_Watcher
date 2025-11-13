@@ -53,16 +53,6 @@ def test_email(message):
 
     print("Email sent to admin")
 
-def get_watched_courses():
-    conn = get_db_conn()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT DISTINCT course_number FROM users;""")
-
-    rows = cursor.fetchall()
-    return [row[0] for row in rows]
-
 def notify_students(found: dict):
     conn = get_db_conn()
     cursor = conn.cursor()
@@ -89,3 +79,22 @@ def notify_students(found: dict):
     conn.commit()
     cursor.close()
     conn.close()
+
+def get_watched_department():
+    """ Returns a dictionary mapping departments to a list of watched course numbers """
+    department_courses = {}
+
+    conn = get_db_conn()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT DISTINCT department, course_number FROM users;""")
+    rows = cursor.fetchall()
+    for department, course_number in rows:
+        if department in department_courses:
+            department_courses[department].append(course_number)
+        else:
+            department_courses[department] = [course_number]
+    cursor.close()
+    conn.close()
+    return department_courses

@@ -13,6 +13,7 @@ def run_code():
     if request.method == 'POST':
         email = request.form.get('email')
         courseNumber = request.form.get('course_number')
+        department = request.form.get('department')
 
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             return render_template('index.html', error="Invalid email address")
@@ -23,8 +24,8 @@ def run_code():
         # first check if user already requested to watch this class
         cursor.execute("""
             SELECT * FROM users
-            WHERE email = %s AND course_number = %s;
-        """, (email, courseNumber))
+            WHERE email = %s AND course_number = %s AND department = %s;
+        """, (email, courseNumber, department))
 
         if cursor.fetchone() is not None:
             cursor.close()
@@ -33,9 +34,9 @@ def run_code():
 
         # insert into db
         cursor.execute("""
-            INSERT INTO users (email, course_number)
-            VALUES (%s, %s);
-        """, (email, courseNumber))
+            INSERT INTO users (email, course_number, department)
+            VALUES (%s, %s, %s);
+        """, (email, courseNumber, department))
 
         send_confirmation_email(email, courseNumber)
 
@@ -45,6 +46,7 @@ def run_code():
 
         print(email)
         print(courseNumber)
+        print(department)
         return render_template('landingpage.html')
 
     return render_template('index.html')

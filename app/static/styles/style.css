@@ -24,7 +24,7 @@ footer {
   background-color: #15172b;
   border-radius: 20px;
   box-sizing: border-box;
-  height: 500px;
+  height: 550px;
   padding: 20px;
   width: 320px;
 }
@@ -90,6 +90,9 @@ footer {
 .ic2 {
   margin-top: 30px;
 }
+.ic3 {
+  margin-top: 30px;
+}
 .input {
   background-color: #303245;
   border-radius: 12px;
@@ -102,6 +105,22 @@ footer {
   padding: 4px 20px 0;
   width: 100%;
 }
+
+/* Dropdown select styling */
+select.input {
+  padding: 4px 40px 0 20px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23eee' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 20px center;
+  cursor: pointer;
+}
+
+select.input option {
+  background-color: #303245;
+  color: #eee;
+}
+
 .cut {
   background-color: #15172b;
   border-radius: 10px;
@@ -113,11 +132,16 @@ footer {
   transition: transform 200ms;
   width: 50px;
 }
-.cut-longer {
-  width: 195px;
+
+.cut-short {
+  width: 47px;
+}
+
+.cut-medium {
+  width: 77px;
 }
 .cut-long {
-  width: 145px;
+  width: 140px;
 }
 .input:focus ~ .cut,
 .input:not(:placeholder-shown) ~ .cut {
@@ -145,6 +169,38 @@ footer {
 .input:focus ~ .placeholder {
   color: #dc2f55;
 }
+
+/* Override for select - only move label when value is selected */
+select.input:focus ~ .cut {
+  transform: translateY(8px);
+}
+
+select.input:focus ~ .placeholder {
+  transform: translateY(-30px) translateX(10px) scale(0.75);
+  color: #dc2f55;
+}
+
+/* Keep label up only when a value is selected */
+select.input[data-selected="true"] ~ .cut {
+  transform: translateY(8px);
+}
+
+select.input[data-selected="true"] ~ .placeholder {
+  transform: translateY(-30px) translateX(10px) scale(0.75);
+  color: #808097;
+}
+
+/* Reset select label to default position when no selection */
+select.input:not([data-selected="true"]):not(:focus) ~ .cut {
+  transform: translateY(0);
+}
+
+select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
+  transform: translateY(0) translateX(0) scale(1);
+  color: #65657b;
+  top: 19px;
+}
+
 .submit {
   background-color: #08d;
   border-radius: 12px;
