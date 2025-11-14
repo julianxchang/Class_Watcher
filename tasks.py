@@ -39,7 +39,6 @@ def check_courses():
             watched_courses = watched_department[department]
             print(f"Department: {department}")
             print(f"Watching courses: {watched_courses}")
-
             found = {}
             while (i < tablelen):
                 try:

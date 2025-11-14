@@ -2,6 +2,7 @@ from selenium import webdriver
 from dotenv import load_dotenv
 import os, time, resend
 from app.db import get_db_conn
+import requests
 
 def create_chrome_driver():
     chrome_options = webdriver.ChromeOptions()
@@ -38,7 +39,7 @@ def send_email(classCodes, courseNumber, email):
     "subject": f"SPOT OPEN IN ICS {courseNumber}!",
     "html": f"<p>Class code(s): {', '.join(classCodes)}<br>Don't forget to enroll in all coclasses!</p>"})
 
-    print("Email sent to student")
+    print(f"Email sent to {email} for ")
 
 def test_email(message):
     load_dotenv()
@@ -98,3 +99,21 @@ def get_watched_department():
     cursor.close()
     conn.close()
     return department_courses
+
+
+def fetch_department(department, term="2026-03"):
+    url = "https://www.reg.uci.edu/perl/WebSoc"
+    payload = {
+        "YearTerm": term,
+        "ShowComments": "off",
+        "Dept": department,
+        "CourseNum": "",
+        "Division": "ANY",
+        "CourseCodes": "",
+        "Submit": "Submit",
+    }
+
+    response = requests.post(url, data=payload)
+    response.raise_for_status()
+    html = response.text
+    return html
