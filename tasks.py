@@ -58,8 +58,8 @@ def run_task():
             i += 1
     if found:
         notify_students(found)
-    # del html, soup, tables, table, found
-    # gc.collect()
+    del html, soup, tables, table, found
+    gc.collect()
 
 if __name__ == "__main__":
     run_requests()
