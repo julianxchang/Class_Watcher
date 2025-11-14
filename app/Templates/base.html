@@ -19,7 +19,15 @@
     <header>
       <nav class="top-nav">
         <a href="{{ url_for('index') }}" class="home-link">UCI Class Watcher</a>
-        <a class="contact-button" href="{{ url_for('contact') }}">Contact</a>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="nav-menu" id="navMenu">
+          <a class="home-button" href="{{ url_for('index') }}">Home</a>
+          <a class="contact-button nav-style" href="{{ url_for('contact') }}">Contact</a>
+        </div>
       </nav>
     </header>
     <main>{% block content %} {% endblock %}</main>
@@ -28,5 +36,20 @@
         <h1>Changlog</h1>
       </a>
     </footer>
+    <script>
+      const hamburger = document.getElementById('hamburger');
+      const navMenu = document.getElementById('navMenu');
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+      });
+      // Close menu when clicking on a link
+      document.querySelectorAll('.nav-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+          hamburger.classList.remove('active');
+          navMenu.classList.remove('active');
+        });
+      });
+    </script>
   </body>
 </html>

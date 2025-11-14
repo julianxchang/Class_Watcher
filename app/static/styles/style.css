@@ -15,6 +15,7 @@ body {
   min-height: 100vh;
   margin: 0;
   background-color: #000;
+  overflow-x: hidden;
 }
 main {
   flex: 1;
@@ -41,6 +42,87 @@ footer {
   background-color: #111;
   width: 100%;
   max-width: 100%;
+  position: relative;
+  overflow: visible;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: #eee;
+  margin: 3px 0;
+  transition: 0.4s;
+  border-radius: 3px;
+  display: block;
+}
+
+/* Hamburger animation when active */
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Navigation menu */
+.nav-menu {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Mobile styles */
+@media screen and (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 60px;
+    right: 0;
+    background-color: #111;
+    flex-direction: column;
+    width: 200px;
+    padding: 20px;
+    gap: 0;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 100;
+    align-items: center;
+  }
+
+  .nav-menu.active {
+    transform: translateX(0);
+  }
+
+  .nav-menu a {
+    width: auto;
+    text-align: center;
+    padding: 12px 0;
+    margin: 0;
+    display: block;
+  }
 }
 
 .form-changelog {
@@ -260,15 +342,43 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   box-sizing: border-box;
   color: #fff;
   cursor: pointer;
-  font-size: 15px;
-  line-height: 1;
-  padding: 10px 16px;
+  font-size: 18px;
+  padding: 10px 20px;
   text-align: center;
   text-decoration: none;
 }
 
 .contact-button:active {
   background-color: #06b;
+}
+
+.home-button,
+.contact-button.nav-style {
+  display: inline-block;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  box-sizing: border-box;
+  color: #eee;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 8px 0;
+  text-align: center;
+  text-decoration: none;
+  transition: border-bottom-color 0.3s ease;
+  margin: 0 16px;
+}
+
+.home-button:hover,
+.contact-button.nav-style:hover {
+  background-color: transparent;
+  border-bottom: 2px solid #eee;
+}
+
+.home-button:active,
+.contact-button.nav-style:active {
+  background-color: transparent;
 }
 
 .submit {
