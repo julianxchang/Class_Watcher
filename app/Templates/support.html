@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% block title %}Success{% endblock %} {% block
+content %}
+<div class="form-changelog">
+  <div class="title">Supported Departments</div>
+  <div class="subtitle">
+    If you would like to request a department, click
+    <a class="here-link" href="{{ url_for('contact') }}">here</a>
+  </div>
+  <ul class="changelog">
+    <li>
+      <p>- ICS</p>
+      <p>- COMPSCI</p>
+      <p>- IN4MATX</p>
+      <p>- CHEM</p>
+      <p>- MATH</p>
+      <p>- PHYSICS</p>
+      <p>- BIO SCI</p>
+      <p>- ECON</p>
+      <p>- HISTORY</p>
+    </li>
+  </ul>
+</div>
+{% endblock %}

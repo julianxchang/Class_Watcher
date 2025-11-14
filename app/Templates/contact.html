@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block title %}Welcome{% endblock %} {% block
+content %}
+<form method="post" action="/send_email">
+  <div class="form">
+    <div class="title">Contact Me</div>
+    <div class="subtitle">Feel free to send me feedback/feature requests</div>
+    <div class="input-container textarea-container ic1">
+      <textarea
+        id="message"
+        class="input textarea-input"
+        placeholder=" "
+        name="message"
+        required
+        rows="3"
+      ></textarea>
+      <div class="cut cut-long"></div>
+      <label for="message" class="placeholder">Your Message</label>
+    </div>
+    <button class="submit" type="submit" value="Send Message" name="action">
+      Send Message
+    </button>
+  </div>
+</form>
+<script>
+  const textarea = document.getElementById("message");
+  textarea.addEventListener("input", function () {
+    this.style.height = "auto";
+    this.style.height = Math.max(100, this.scrollHeight) + "px";
+  });
+</script>
+{% endblock %}

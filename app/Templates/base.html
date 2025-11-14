@@ -11,12 +11,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
-    <!-- Header -->
     <header>
-      <nav>
-        <a href="{{ url_for('index') }}" class="home-link">
-          <h1>UCI Class Watcher</h1>
-        </a>
+      <nav class="top-nav">
+        <a href="{{ url_for('index') }}" class="home-link">UCI Class Watcher</a>
+        <a class="contact-button" href="{{ url_for('contact') }}">Contact</a>
       </nav>
     </header>
     <main>{% block content %} {% endblock %}</main>

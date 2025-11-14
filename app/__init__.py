@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 from app.db import get_db_conn
-from app.utils import send_confirmation_email
+from app.utils import send_confirmation_email, contact_message
 import re
 app = Flask(__name__, template_folder="Templates")
 
@@ -51,6 +51,14 @@ def run_code():
 
     return render_template('index.html')
 
+@app.route('/send_email', methods=['POST'])
+def send_email():
+    if request.method == 'POST':
+        message = request.form.get('message')
+        contact_message(message)
+        return render_template('sent.html')
+
+
 @app.route('/home')
 def func():
     return render_template('index.html')
@@ -58,6 +66,18 @@ def func():
 @app.route('/changelog')
 def changelog():
     return render_template('changelog.html')
+
+@app.route('/support')
+def support():
+    return render_template('support.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
+@app.route('/sent')
+def sent():
+    return render_template('sent.html')
 
 if __name__ == "__main__":
     app.run(debug=True, port=8000)

@@ -102,3 +102,13 @@ def fetch_department(department, term="2026-03"):
     response.raise_for_status()
     html = response.text
     return html
+
+def contact_message(message):
+    load_dotenv()
+    resend.api_key = os.getenv("RESEND_API")
+
+    r = resend.Emails.send({
+    "from": "noreply@uciclasswatcher.com",
+    "to": "uciclasswatcher@gmail.com",
+    "subject": "Contact Form Message",
+    "html": f"New message:<br><p>{message}</p>"})

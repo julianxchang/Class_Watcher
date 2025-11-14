@@ -4,7 +4,11 @@ content %}
   <div class="form">
     <div class="title">Welcome</div>
     <div class="subtitle">
-      Enter information below to start watching any ICS or COMPSCI class
+      Enter information below to start watching a class
+    </div>
+    <div class="subtitle">
+      A list of supported classes can be found
+      <a class="here-link" href="{{ url_for('support') }}">here</a>
     </div>
     <div class="input-container ic1">
       <input
@@ -31,6 +35,13 @@ content %}
           I&C SCI (Information & Computer Science)
         </option>
         <option value="COMPSCI">COMPSCI (Computer Science)</option>
+        <option value="IN4MATX">IN4MATX (Informatics)</option>
+        <option value="CHEM">CHEM (Chemistry)</option>
+        <option value="MATH">MATH (Mathematics)</option>
+        <option value="PHYSICS">PHYSICS (Physics)</option>
+        <option value="BIO SCI">BIO SCI (Biological Sciences)</option>
+        <option value="ECON">ECON (Economics)</option>
+        <option value="HISTORY">HISTORY (History)</option>
       </select>
       <div class="cut cut-medium"></div>
       <label for="department" class="placeholder">Department</label>

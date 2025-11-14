@@ -1,34 +1,63 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
 body {
   display: flex;
-  flex-direction: column; /* stack children vertically */
-  justify-content: space-between; /* push first to top, last to bottom, main in middle */
-  min-height: 100vh; /* take full viewport height */
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
   margin: 0;
   background-color: #000;
 }
 main {
   flex: 1;
   display: flex;
-  justify-content: center; /* center form horizontally */
-  align-items: center; /* center form vertically in its area */
+  justify-content: center;
+  align-items: center;
 }
 nav,
 footer {
-  width: 100%; /* span full width */
+  width: 100%;
   color: white;
   background-color: #111;
   padding: 1px 0;
   text-align: center;
 }
-.form {
+
+/* Top navigation bar layout */
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 20px;
+  background-color: #111;
+  width: 100%;
+  max-width: 100%;
+}
+
+.form-changelog {
   background-color: #15172b;
   border-radius: 20px;
   box-sizing: border-box;
-  height: 550px;
+  height: auto;
+  max-height: 550px;
   padding: 20px;
   width: 320px;
+  overflow-y: auto;
+  gap: 20px;
+  align-items: center;
+  text-align: center;
 }
-.form-complete {
+
+.form {
   background-color: #15172b;
   border-radius: 20px;
   box-sizing: border-box;
@@ -43,29 +72,28 @@ footer {
   justify-content: center;
   align-items: center;
   text-align: center;
+  gap: 20px;
 }
 
-/* Custom scrollbar styling for .form-complete */
-.form-complete::-webkit-scrollbar {
+.form-changelog::-webkit-scrollbar {
   width: 8px;
 }
 
-.form-complete::-webkit-scrollbar-track {
+.form-changelog ::-webkit-scrollbar-track {
   background: #1a1c2e;
   border-radius: 10px;
 }
 
-.form-complete::-webkit-scrollbar-thumb {
+.form-changelog::-webkit-scrollbar-thumb {
   background: #3a3d55;
   border-radius: 10px;
 }
 
-.form-complete::-webkit-scrollbar-thumb:hover {
+.form-changelog::-webkit-scrollbar-thumb:hover {
   background: #4a4d65;
 }
 
-/* Firefox scrollbar styling */
-.form-complete {
+.form-changelog {
   scrollbar-width: thin;
   scrollbar-color: #3a3d55 #1a1c2e;
 }
@@ -74,11 +102,15 @@ footer {
   font-family: sans-serif;
   font-size: 36px;
   font-weight: 600;
-  margin-top: 30px;
+  margin-top: 0;
+  margin-bottom: 0;
   text-align: center;
 }
 
-/* Success page title with no top margin for proper centering */
+.form-changelog .title {
+  font-size: 25px;
+}
+
 .form-complete .title {
   margin-top: 0;
 }
@@ -88,7 +120,8 @@ footer {
   font-family: sans-serif;
   font-size: 16px;
   font-weight: 600;
-  margin-top: 10px;
+  margin-top: 0;
+  margin-bottom: 0;
   text-align: center;
 }
 .input-container {
@@ -96,14 +129,15 @@ footer {
   position: relative;
   width: 100%;
 }
-.ic1 {
-  margin-top: 40px;
+
+.input-container.textarea-container {
+  height: auto;
+  min-height: 100px;
 }
-.ic2 {
-  margin-top: 30px;
-}
+.ic1,
+.ic2,
 .ic3 {
-  margin-top: 30px;
+  margin-top: 0;
 }
 .input {
   background-color: #303245;
@@ -118,7 +152,15 @@ footer {
   width: 100%;
 }
 
-/* Dropdown select styling */
+textarea.input {
+  min-height: 100px;
+  height: auto;
+  padding: 15px 20px;
+  resize: vertical;
+  font-family: sans-serif;
+  line-height: 1.5;
+}
+
 select.input {
   padding: 4px 40px 0 20px;
   appearance: none;
@@ -182,7 +224,6 @@ select.input option {
   color: #dc2f55;
 }
 
-/* Override for select - only move label when value is selected */
 select.input:focus ~ .cut {
   transform: translateY(8px);
 }
@@ -192,7 +233,6 @@ select.input:focus ~ .placeholder {
   color: #dc2f55;
 }
 
-/* Keep label up only when a value is selected */
 select.input[data-selected="true"] ~ .cut {
   transform: translateY(8px);
 }
@@ -202,7 +242,6 @@ select.input[data-selected="true"] ~ .placeholder {
   color: #808097;
 }
 
-/* Reset select label to default position when no selection */
 select.input:not([data-selected="true"]):not(:focus) ~ .cut {
   transform: translateY(0);
 }
@@ -211,6 +250,25 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   transform: translateY(0) translateX(0) scale(1);
   color: #65657b;
   top: 19px;
+}
+
+.contact-button {
+  display: inline-block;
+  background-color: #08d;
+  border-radius: 12px;
+  border: 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  padding: 10px 16px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.contact-button:active {
+  background-color: #06b;
 }
 
 .submit {
@@ -222,7 +280,7 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   cursor: pointer;
   font-size: 18px;
   height: 50px;
-  margin-top: 38px;
+  margin-top: 0;
   text-align: center;
   width: 100%;
 }
@@ -241,8 +299,14 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   color: white;
   text-decoration: none;
   font-family: sans-serif;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.here-link {
+  color: rgb(0, 110, 255);
+  text-decoration: none;
+  font-family: sans-serif;
 }
 
 .changelog-link {
@@ -255,7 +319,7 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
 
 .changelog {
   list-style: none;
-  padding: 0;
+  padding: 20px;
 }
 
 .changelog li {

@@ -1,29 +1,36 @@
 {% extends "base.html" %} {% block title %}Success{% endblock %} {% block
 content %}
-<div class="form-complete">
+<div class="form-changelog">
   <div class="title">Changlog</div>
 
   <ul class="changelog">
     <li>
+      <span class="version">v2.1</span>
+      <span class="date">2025-11-13</span>
+      <p>- Added support for more departments</p>
+      <p>- Improved styling</p>
+    </li>
+    <li>
       <span class="version">v2</span>
       <span class="date">2025-11-11</span>
       <p>
-        Refactored code to scale (Previously a worker was spawned for every
+        - Refactored code to scale (Previously a worker was spawned for every
         class being watched 😭)
       </p>
-      <p>Replaced huey with cron job</p>
-      <p>Emails are now sent via Resend API rather than SMTP</p>
-      <p>Updated form for better error handling</p>
+      <p>- Replaced huey with cron job</p>
+      <p>- Emails are now sent via Resend API rather than SMTP</p>
+      <p>- Updated form for better error handling</p>
     </li>
     <li>
       <span class="version">v1.1</span>
       <span class="date">2024-2025</span>
-      <p>Long ass break</p>
+      <p>- Small bug fixes</p>
+      <p>- Long ass break</p>
     </li>
     <li>
       <span class="version">v1.0</span>
       <span class="date">2024-01-05</span>
-      <p>Initial release of UCI Class Watcher</p>
+      <p>- Initial release of UCI Class Watcher</p>
     </li>
   </ul>
 </div>
