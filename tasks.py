@@ -9,7 +9,7 @@ def run_requests():
         print(f"Starting course check #{i+1}...")
         run_task()
         i += 1
-        time.sleep(10)  # check every 10 seconds
+        time.sleep(120)  # check every 2 minutes
 
 def run_task():
     pid = os.getpid()
@@ -24,7 +24,7 @@ def run_task():
         soup = BeautifulSoup(html, 'html.parser')
         tables = soup.find_all(class_='course-list')
         if not tables:
-            print(f"No 'course-list' tables found for department {department}")
+            print(f"No tables found for department {department}")
             continue
         table = tables[0].find_all('tr')
         i = 0
