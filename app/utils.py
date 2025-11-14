@@ -1,22 +1,7 @@
-from selenium import webdriver
 from dotenv import load_dotenv
 import os, time, resend
 from app.db import get_db_conn
 import requests
-
-def create_chrome_driver():
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('--headless=new') # Run Chrome in headless mode (commnet this line to see browser)
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--window-size=1920,1080")
-    chrome_options.add_argument("--incognito")
-    chrome_options.add_argument("--disable-application-cache")
-    chrome_options.add_argument("--disk-cache-size=0")
-    chrome_options.add_argument("--media-cache-size=0")
-    driver = webdriver.Chrome(options=chrome_options)
-    return driver
 
 def send_confirmation_email(email, courseNumber):
     load_dotenv()
