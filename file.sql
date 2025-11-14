@@ -4,3 +4,6 @@ CREATE TABLE users(
     department VarChar(30) NOT NULL,
     course_number VARCHAR(30) NOT NULL
 );
+
+CREATE UNIQUE INDEX IF NOT EXISTS unique_user_course
+ON users (email, course_number, department);
