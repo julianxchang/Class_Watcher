@@ -12,8 +12,8 @@ def index():
 def run_code():
     if request.method == 'POST':
         email = request.form.get('email')
-        courseNumber = request.form.get('course_number')
         department = request.form.get('department')
+        courseNumber = request.form.get('course_number').upper()
 
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             return render_template('index.html', error="Invalid email address")

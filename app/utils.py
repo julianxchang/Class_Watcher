@@ -3,10 +3,10 @@ import os, time, resend
 from app.db import get_db_conn
 import requests
 
-def send_confirmation_email(email, department, courseNumber):
-    load_dotenv()
-    resend.api_key = os.getenv("RESEND_API")
+load_dotenv()
+resend.api_key = os.getenv("RESEND_API")
 
+def send_confirmation_email(email, department, courseNumber):
     r = resend.Emails.send({
     "from": "noreply@uciclasswatcher.com",
     "to": email,
@@ -15,9 +15,6 @@ def send_confirmation_email(email, department, courseNumber):
 
 
 def send_email(classCodes, department, courseNumber, email):
-    load_dotenv()
-    resend.api_key = os.getenv("RESEND_API")
-
     r = resend.Emails.send({
     "from": "noreply@uciclasswatcher.com",
     "to": email,
@@ -27,10 +24,6 @@ def send_email(classCodes, department, courseNumber, email):
     print(f"Email sent to {email} for {department} {courseNumber}")
 
 def test_email(message):
-    load_dotenv()
-    resend.api_key = os.getenv("RESEND_API")
-
-
     r = resend.Emails.send({
     "from": "noreply@uciclasswatcher.com",
     "to": "uciclasswatcher@gmail.com",

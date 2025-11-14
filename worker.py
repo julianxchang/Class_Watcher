@@ -1,15 +1,6 @@
-import requests
 from bs4 import BeautifulSoup
-import re, os, time, gc
+import re, os
 from app.utils import get_watched_department, notify_students, fetch_department
-
-def run_requests():
-    i = 0
-    while True:
-        print(f"Starting course check #{i+1}...")
-        run_task()
-        i += 1
-        time.sleep(120)  # check every 2 minutes
 
 def run_task():
     pid = os.getpid()
@@ -24,14 +15,17 @@ def run_task():
         found[department] = {}
         html = fetch_department(department)
         soup = BeautifulSoup(html, 'html.parser')
+
         tables = soup.find_all(class_='course-list')
         if not tables:
             print(f"No tables found for department {department}")
+            del html, soup, tables
             continue
         table = tables[0].find_all('tr')
         i = 0
         while i < len(table):
-            checkRow = table[i].find(class_="CourseTitle")  # first check if this contains Course Titla
+            # checkRow = table[i].find(class_="CourseTitle")  # first check if this contains Course Titla
+            checkRow = table[i].find(attrs={'class': 'CourseTitle'})
             if checkRow:
                 text = checkRow.get_text().lower()
                 for course in watched_departments[department]:
@@ -40,16 +34,16 @@ def run_task():
                         print(f">>> Matched course: {department} {course}")
                         j = i + 1
                         while j < len(table):
-                            course_titles = table[j].find_all(class_="CourseTitle")
+                            # course_titles = table[j].find_all(class_="CourseTitle")
+                            course_titles = table[j].find_all(attrs={'class': 'CourseTitle'})
                             if course_titles:
                                 i = j - 1
                                 break
                             rows = table[j].find_all('td')
                             if rows:
-                                print([row.text for row in rows])
                                 if len(rows) > 10 and rows[1].text == "Lec" and rows[-1].text == "OPEN":
                                     classCode = rows[0].text
-                                    print(f"Found open lecture: {classCode}")
+                                    print(f"Found open lecture: {department} {classCode}")
                                     if course in found[department]:
                                         found[department][course].append(classCode)
                                     else:
@@ -58,8 +52,7 @@ def run_task():
             i += 1
     if found:
         notify_students(found)
-    del html, soup, tables, table, found
-    gc.collect()
+    print(f"[PID {pid}] Finished check_courses task.")
 
 if __name__ == "__main__":
-    run_requests()
+    run_task()
