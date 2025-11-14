@@ -14,12 +14,14 @@ def run_requests():
 def run_task():
     pid = os.getpid()
     print(f"[PID {pid}] Starting check_courses task...")
+    # Dictionary mapping department to another dictionary where key is course number and value is list of open class codes
     found = {}
     watched_departments = get_watched_department()
 
     print("Watched departments and courses:", watched_departments)
 
     for department in watched_departments:
+        found[department] = {}
         html = fetch_department(department)
         soup = BeautifulSoup(html, 'html.parser')
         tables = soup.find_all(class_='course-list')
@@ -48,10 +50,10 @@ def run_task():
                                 if len(rows) > 10 and rows[1].text == "Lec" and rows[-1].text == "OPEN":
                                     classCode = rows[0].text
                                     print(f"Found open lecture: {classCode}")
-                                    if course in found:
-                                        found[course].append(classCode)
+                                    if course in found[department]:
+                                        found[department][course].append(classCode)
                                     else:
-                                        found[course] = [classCode]
+                                        found[department][course] = [classCode]
                             j += 1
             i += 1
     if found:

@@ -38,7 +38,7 @@ def run_code():
             VALUES (%s, %s, %s);
         """, (email, courseNumber, department))
 
-        send_confirmation_email(email, courseNumber)
+        send_confirmation_email(email, department, courseNumber)
 
         conn.commit()
         cursor.close()

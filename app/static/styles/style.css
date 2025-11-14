@@ -284,9 +284,11 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   text-align: center;
   width: 100%;
 }
+
 .submit:active {
   background-color: #06b;
 }
+
 .error-message {
   color: #ff6666;
   font-family: sans-serif;
