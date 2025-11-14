@@ -12,7 +12,7 @@ def send_confirmation_email(email, department, courseNumber):
     "to": email,
     "subject": f"Successfully started watching {department} {courseNumber}",
     "html": f"<p>You will be notified when a spot opens up!<br>Make sure to register as soon as you get the email as you won't be notified again for this course.<br><br>Best of luck!<br><br>- UCI Class Watcher</p>"})
-
+    print(f"Confirmation email sent to {email} for {department} {courseNumber}")
 
 def send_email(classCodes, department, courseNumber, email):
     r = resend.Emails.send({
