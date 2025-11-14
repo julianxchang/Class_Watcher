@@ -1,7 +1,5 @@
 html {
   box-sizing: border-box;
-  overflow-x: hidden;
-  width: 100%;
 }
 
 *,
@@ -18,8 +16,6 @@ body {
   margin: 0;
   background-color: #000;
   overflow-x: hidden;
-  width: 100%;
-  position: relative;
 }
 main {
   flex: 1;
@@ -47,36 +43,40 @@ footer {
   width: 100%;
   max-width: 100%;
   position: relative;
-  overflow-x: hidden;
+  overflow: visible;
 }
 
 .hamburger {
   display: none;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 8px;
-  z-index: 10;
-  width: 40px;
-  height: 40px;
+  padding: 5px;
+  z-index: 101;
+  width: 35px;
+  height: 35px;
+  position: relative;
 }
 
 .hamburger span {
   width: 25px;
   height: 3px;
   background-color: #eee;
-  margin: 3px 0;
-  transition: 0.4s;
-  border-radius: 3px;
+  transition: all 0.3s ease;
+  border-radius: 0;
   display: block;
+  position: relative;
 }
 
 /* Hamburger animation when active */
 .hamburger.active span:nth-child(1) {
-  transform: rotate(45deg) translate(6px, 6px);
+  transform: rotate(45deg) translateY(0px);
+  position: absolute;
+  top: 50%;
+  margin-top: -1.5px;
 }
 
 .hamburger.active span:nth-child(2) {
@@ -84,7 +84,10 @@ footer {
 }
 
 .hamburger.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(6px, -6px);
+  transform: rotate(-45deg) translateY(0px);
+  position: absolute;
+  top: 50%;
+  margin-top: -1.5px;
 }
 
 /* Navigation menu */
