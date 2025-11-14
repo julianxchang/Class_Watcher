@@ -32,11 +32,17 @@ footer {
   background-color: #15172b;
   border-radius: 20px;
   box-sizing: border-box;
-  height: 500px;
-  padding: 20px;
+  height: auto;
+  min-height: 300px;
+  padding: 40px 20px;
   width: 320px;
   overflow-y: auto;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 /* Custom scrollbar styling for .form-complete */
@@ -71,6 +77,12 @@ footer {
   margin-top: 30px;
   text-align: center;
 }
+
+/* Success page title with no top margin for proper centering */
+.form-complete .title {
+  margin-top: 0;
+}
+
 .subtitle {
   color: #eee;
   font-family: sans-serif;
