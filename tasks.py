@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-import re, os, time
+import re, os, time, gc
 from app.utils import get_watched_department, notify_students, fetch_department
 
 def run_requests():
@@ -58,6 +58,8 @@ def run_task():
             i += 1
     if found:
         notify_students(found)
+    del html, soup, tables, table
+    gc.collect()
 
 if __name__ == "__main__":
     run_requests()
