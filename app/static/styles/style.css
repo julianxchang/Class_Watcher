@@ -138,7 +138,7 @@ footer {
   box-sizing: border-box;
   height: auto;
   max-height: 550px;
-  padding: 20px;
+  padding: 40px 20px 0 20px;
   width: 320px;
   overflow-y: auto;
   gap: 20px;
