@@ -281,10 +281,10 @@ select.input option {
 }
 
 .cut-medium {
-  width: 77px;
+  width: 75px;
 }
 .cut-long {
-  width: 140px;
+  width: 188px;
 }
 .input:focus ~ .cut,
 .input:not(:placeholder-shown) ~ .cut {
