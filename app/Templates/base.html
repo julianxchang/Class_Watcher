@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>{% block title %}UCI Class Watcher{% endblock %}</title>
+    <title>{% block title %}Welcome - UCI Class Watcher{% endblock %}</title>
     <link
       rel="icon"
       type="image/x-icon"
@@ -26,7 +26,8 @@
         </button>
         <div class="nav-menu" id="navMenu">
           <a class="home-button" href="{{ url_for('index') }}">Home</a>
-          <a class="contact-button nav-style" href="{{ url_for('contact') }}">Contact</a>
+          <a class="stats-button" href="{{ url_for('stats') }}">Stats</a>
+          <a class="contact-button" href="{{ url_for('contact') }}">Contact</a>
         </div>
       </nav>
     </header>
@@ -37,32 +38,34 @@
       </a>
     </footer>
     <script>
-      const hamburger = document.getElementById('hamburger');
-      const navMenu = document.getElementById('navMenu');
-      hamburger.addEventListener('click', (e) => {
+      const hamburger = document.getElementById("hamburger");
+      const navMenu = document.getElementById("navMenu");
+      hamburger.addEventListener("click", (e) => {
         e.stopPropagation();
-        hamburger.classList.toggle('active');
-        navMenu.classList.toggle('active');
+        hamburger.classList.toggle("active");
+        navMenu.classList.toggle("active");
       });
       // Close menu when clicking on a link
-      document.querySelectorAll('.nav-menu a').forEach(link => {
-        link.addEventListener('click', () => {
-          hamburger.classList.remove('active');
-          navMenu.classList.remove('active');
+      document.querySelectorAll(".nav-menu a").forEach((link) => {
+        link.addEventListener("click", () => {
+          hamburger.classList.remove("active");
+          navMenu.classList.remove("active");
         });
       });
-      window.addEventListener('scroll', () => {
-        if (navMenu.classList.contains('active')) {
-          hamburger.classList.remove('active');
-          navMenu.classList.remove('active');
+      window.addEventListener("scroll", () => {
+        if (navMenu.classList.contains("active")) {
+          hamburger.classList.remove("active");
+          navMenu.classList.remove("active");
         }
       });
-      document.addEventListener('click', (e) => {
-        if (navMenu.classList.contains('active') && 
-            !navMenu.contains(e.target) && 
-            !hamburger.contains(e.target)) {
-          hamburger.classList.remove('active');
-          navMenu.classList.remove('active');
+      document.addEventListener("click", (e) => {
+        if (
+          navMenu.classList.contains("active") &&
+          !navMenu.contains(e.target) &&
+          !hamburger.contains(e.target)
+        ) {
+          hamburger.classList.remove("active");
+          navMenu.classList.remove("active");
         }
       });
     </script>

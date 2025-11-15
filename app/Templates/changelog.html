@@ -1,9 +1,19 @@
-{% extends "base.html" %} {% block title %}Changelog{% endblock %} {% block
-content %}
+{% extends "base.html" %} {% block title %}Changelog - UCI Class Watcher{%
+endblock %} {% block content %}
 <div class="form-changelog">
   <div class="title">Changlog</div>
 
   <ul class="changelog">
+    <li>
+      <span class="version">v2.2</span>
+      <span class="date">2025-11-15</span>
+      <p>
+        - Added
+        <a class="here-link" href="{{ url_for('stats') }}">stats page</a>
+      </p>
+      <p>- Improved mobile responsiveness</p>
+      <p>- Small bug fixes</p>
+    </li>
     <li>
       <span class="version">v2.1</span>
       <span class="date">2025-11-13</span>

@@ -53,6 +53,11 @@ def notify_students(found: dict):
                 send_email(classCodes, department, courseNumber, email)
                 time.sleep(1)
 
+                cursor.execute("""
+                    INSERT INTO notifications_sent (email, department, course_number, class_codes)
+                    VALUES (%s, %s, %s, %s);
+                """, (email, department, courseNumber, ', '.join(classCodes)))
+
             cursor.execute("""
                 DELETE FROM users
                 WHERE course_number = %s AND department = %s;
@@ -107,4 +112,49 @@ def contact_message(message):
     "from": "noreply@uciclasswatcher.com",
     "to": "uciclasswatcher@gmail.com",
     "subject": "Contact Form Message",
-    "html": f"New message:<br><p>{message}</p>"})
+    "html": f"<p>New message:<br><p>{message}</p>"})
+
+
+def get_stats():
+    """Returns statistics about the application"""
+    conn = get_db_conn()
+    cursor = conn.cursor()
+
+    stats = {}
+
+    # Total notifications sent
+    cursor.execute("SELECT COUNT(*) FROM notifications_sent;")
+    stats['total_notifications'] = cursor.fetchone()[0]
+
+    # Currently watched classes
+    cursor.execute("SELECT COUNT(*) FROM users;")
+    stats['current_watchers'] = cursor.fetchone()[0]
+
+    # Most watched courses
+    cursor.execute("""
+        SELECT department, course_number, COUNT(*) as watch_count
+        FROM users
+        GROUP BY department, course_number
+        ORDER BY watch_count DESC
+        LIMIT 5;
+    """)
+    stats['top_courses'] = cursor.fetchall()
+
+    # Notifications sent today
+    cursor.execute("""
+        SELECT COUNT(*) FROM notifications_sent
+        WHERE sent_at >= CURRENT_DATE;
+    """)
+    stats['notifications_today'] = cursor.fetchone()[0]
+
+    # Notifications sent this week
+    cursor.execute("""
+        SELECT COUNT(*) FROM notifications_sent
+        WHERE sent_at >= CURRENT_DATE - INTERVAL '7 days';
+    """)
+    stats['notifications_this_week'] = cursor.fetchone()[0]
+
+    cursor.close()
+    conn.close()
+
+    return stats

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 from app.db import get_db_conn
-from app.utils import send_confirmation_email, contact_message
+from app.utils import send_confirmation_email, contact_message, get_stats
 import re
 app = Flask(__name__, template_folder="Templates")
 
@@ -78,6 +78,11 @@ def contact():
 @app.route('/sent')
 def sent():
     return render_template('sent.html')
+
+@app.route('/stats')
+def stats():
+    stats_data = get_stats()
+    return render_template('stats.html', stats=stats_data)
 
 if __name__ == "__main__":
     app.run(debug=True, port=8000)
