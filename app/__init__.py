@@ -2,7 +2,33 @@ from flask import Flask, render_template, request
 from app.db import get_db_conn
 from app.utils import send_confirmation_email, contact_message, get_stats
 import re
+
 app = Flask(__name__, template_folder="Templates")
+
+VALID_DEPARTMENTS = frozenset([
+    "AC ENG", "AFAM", "ANATOMY", "ANESTH", "ANTHRO", "ARABIC", "ARMN", "ART",
+    "ART HIS", "ARTS", "ARTSHUM", "ASIANAM", "ASL", "BANA", "BATS", "BIO SCI",
+    "BIOCHEM", "BME", "CAMPREC", "CBE", "CEM", "CHC/LAT", "CHEM", "CHINESE",
+    "CLASSIC", "CLT&THY", "COGS", "COM LIT", "COMPSCI", "CRITISM", "CRM/LAW",
+    "CSE", "DANCE", "DATA", "DERM", "DEV BIO", "DRAMA", "EARTHSS", "EAS",
+    "ECO EVO", "ECON", "ECPS", "ED AFF", "EDUC", "EECS", "EHS", "ENGLISH",
+    "ENGR", "ENGRCEE", "ENGRMAE", "EPIDEM", "ER MED", "EURO ST", "FAM MED",
+    "FILIPNO", "FIN", "FLM&MDA", "FRENCH", "GDIM", "GEN&SEX", "GERMAN",
+    "GLBL ME", "GLBLCLT", "GREEK", "HEBREW", "HINDI", "HISTORY", "HUMAN",
+    "HUMARTS", "I&C SCI", "IN4MATX", "INNO", "INT MED", "INTL ST", "IRAN",
+    "ITALIAN", "JAPANSE", "KOREAN", "LATIN", "LAW", "LIT JRN", "LPS", "LSCI",
+    "M&MG", "MATH", "MED", "MED ED", "MED HUM", "MGMT", "MGMT EP", "MGMT FE",
+    "MGMT HC", "MGMTMBA", "MGMTPHD", "MIC BIO", "MNGE", "MOL BIO", "MPAC",
+    "MSE", "MUSIC", "NET SYS", "NEURBIO", "NEUROL", "NUR DNP", "NUR FNP",
+    "NUR INF", "NUR SCI", "OB/GYN", "OPHTHAL", "PATH", "PED GEN", "PEDS",
+    "PERSIAN", "PHARM", "PHILOS", "PHMD", "PHRMSCI", "PHY SCI", "PHYSICS",
+    "PHYSIO", "PLASTIC", "PM&R", "POL SCI", "PORTUG", "PSCI", "PSMD",
+    "PUB POL", "PUBHLTH", "RADIO", "REL STD", "ROTC", "RUSSIAN", "SOC SCI",
+    "SOCECOL", "SOCIOL", "SPANISH", "SPPS", "STATS", "SURGERY", "SWE",
+    "TAGALOG", "TOX", "UCDC", "UNI AFF", "UNI STU", "UPPP", "VIETMSE",
+    "VIS STD", "WRITING"
+])
+
 
 @app.route('/')
 def index():
@@ -17,6 +43,9 @@ def run_code():
 
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             return render_template('index.html', error="Invalid email address")
+
+        if department not in VALID_DEPARTMENTS:
+            return render_template('index.html', error="Invalid department")
 
         conn = get_db_conn()
         cursor = conn.cursor()
@@ -45,8 +74,7 @@ def run_code():
         conn.close()
 
         print(email)
-        print(courseNumber)
-        print(department)
+        print(department, courseNumber)
         return render_template('landingpage.html')
 
     return render_template('index.html')
