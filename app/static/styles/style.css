@@ -3,6 +3,23 @@ html {
   font-family: sans-serif;
 }
 
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #222;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #08d;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0af;
+}
+
 *,
 *::before,
 *::after {
@@ -71,7 +88,6 @@ footer {
   position: relative;
 }
 
-/* Hamburger animation when active */
 .hamburger.active span:nth-child(1) {
   transform: rotate(45deg) translateY(0px);
   position: absolute;
@@ -163,28 +179,6 @@ footer {
   gap: 20px;
 }
 
-.form-changelog::-webkit-scrollbar {
-  width: 8px;
-}
-
-.form-changelog ::-webkit-scrollbar-track {
-  background: #1a1c2e;
-  border-radius: 10px;
-}
-
-.form-changelog::-webkit-scrollbar-thumb {
-  background: #3a3d55;
-  border-radius: 10px;
-}
-
-.form-changelog::-webkit-scrollbar-thumb:hover {
-  background: #4a4d65;
-}
-
-.form-changelog {
-  scrollbar-width: thin;
-  scrollbar-color: #3a3d55 #1a1c2e;
-}
 .title {
   color: #eee;
   font-size: 36px;
@@ -701,21 +695,4 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
 .autocomplete-item.selected {
   background-color: #08d;
   color: #fff;
-}
-
-.autocomplete-dropdown::-webkit-scrollbar {
-  width: 6px;
-}
-
-.autocomplete-dropdown::-webkit-scrollbar-track {
-  background: #222;
-}
-
-.autocomplete-dropdown::-webkit-scrollbar-thumb {
-  background: #08d;
-  border-radius: 3px;
-}
-
-.autocomplete-dropdown::-webkit-scrollbar-thumb:hover {
-  background: #0af;
 }
