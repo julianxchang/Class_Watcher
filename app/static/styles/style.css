@@ -155,8 +155,7 @@ footer {
   min-height: 300px;
   padding: 40px 20px;
   width: 320px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: visible;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -667,4 +666,57 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   color: #08d;
   font-size: 14px;
   font-weight: 600;
+}
+
+/* Autocomplete dropdown */
+.autocomplete-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #222;
+  border: 2px solid #08d;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  margin-top: -1px;
+}
+
+.autocomplete-item {
+  padding: 12px 16px;
+  cursor: pointer;
+  color: #eee;
+  font-size: 14px;
+  transition: background-color 0.2s;
+  border-bottom: 1px solid #333;
+}
+
+.autocomplete-item:last-child {
+  border-bottom: none;
+}
+
+.autocomplete-item:hover,
+.autocomplete-item.selected {
+  background-color: #08d;
+  color: #fff;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar-track {
+  background: #222;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar-thumb {
+  background: #08d;
+  border-radius: 3px;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #0af;
 }
