@@ -5,25 +5,15 @@ endblock %} {% block content %}
 
   <ul class="changelog">
     <li>
-      <span class="version">v2.2</span>
+      <span class="version">v2.1</span>
       <span class="date">2025-11-15</span>
       <p>
         - Added
         <a class="here-link" href="{{ url_for('stats') }}">stats page</a>
       </p>
-      <p>- Improved mobile responsiveness</p>
-      <p>- Small bug fixes</p>
-    </li>
-    <li>
-      <span class="version">v2.1</span>
-      <span class="date">2025-11-13</span>
-      <p>
-        - Added support for
-        <a class="here-link" href="{{ url_for('support') }}"
-          >more departments</a
-        >
-      </p>
-      <p>- Improved styling</p>
+      <p>- Added support for more departments</p>
+      <p>- Improved website design and mobile responsiveness</p>
+      <p>- Bug fixes</p>
     </li>
     <li>
       <span class="version">v2</span>
@@ -32,7 +22,7 @@ endblock %} {% block content %}
         - Refactored code to scale (Previously a worker was spawned for every
         class being watched 😭)
       </p>
-      <p>- Replaced huey with cron job</p>
+      <p>- Replaced huey with subprocess</p>
       <p>- Emails are now sent via Resend API instead of SMTP</p>
       <p>- Updated form for better error handling</p>
     </li>

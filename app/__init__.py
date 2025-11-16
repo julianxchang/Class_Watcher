@@ -67,10 +67,6 @@ def func():
 def changelog():
     return render_template('changelog.html')
 
-@app.route('/support')
-def support():
-    return render_template('support.html')
-
 @app.route('/contact')
 def contact():
     return render_template('contact.html')

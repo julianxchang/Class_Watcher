@@ -6,10 +6,6 @@ endblock %} {% block content %}
     <div class="subtitle">
       Enter information below to start watching a class
     </div>
-    <div class="subtitle">
-      A list of supported departments can be found
-      <a class="here-link" href="{{ url_for('support') }}">here</a>
-    </div>
     <div class="input-container ic1">
       <input
         id="email"
@@ -45,6 +41,10 @@ endblock %} {% block content %}
       </select>
       <div class="cut cut-medium"></div>
       <label for="department" class="placeholder">Department</label>
+    </div>
+    <div class="subtitle-small">
+      Don't see your department? Request it
+      <a class="here-link" href="{{ url_for('contact') }}">here</a>
     </div>
     <div class="input-container ic3">
       <input
