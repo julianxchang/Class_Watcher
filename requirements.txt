@@ -5,4 +5,3 @@ psycopg2-binary
 resend
 bs4
 psutil
-lxml
