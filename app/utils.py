@@ -129,7 +129,7 @@ def get_stats():
     stats['total_notifications'] = cursor.fetchone()[0]
 
     # Currently watched classes
-    cursor.execute("SELECT COUNT(*) FROM users;")
+    cursor.execute("SELECT COUNT(*) FROM watching;")
     stats['current_watchers'] = cursor.fetchone()[0]
 
     # Most watched courses
