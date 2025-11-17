@@ -1,0 +1,54 @@
+{% extends "base.html" %} {% block title %}Sign up - UCI Class Watcher{%
+endblock %} {% block content %}
+<form method="post" action="/signup">
+  <div class="form">
+    <div class="title">Sign up</div>
+    <div class="input-container ic1">
+      <input
+        id="email"
+        class="input"
+        type="email"
+        placeholder=" "
+        name="email"
+        required
+      />
+      <div class="cut email-cut"></div>
+      <label for="email" class="placeholder">Email</label>
+    </div>
+    <div class="input-container ic2">
+      <input
+        id="password"
+        class="input"
+        type="password"
+        placeholder=" "
+        name="password"
+        required
+      />
+      <div class="cut password-cut"></div>
+      <label for="password" class="placeholder">Password</label>
+    </div>
+    <div class="input-container ic2">
+      <input
+        id="confirm_password"
+        class="input"
+        type="password"
+        placeholder=" "
+        name="confirm_password"
+        required
+      />
+      <div class="cut confirm-password-cut"></div>
+      <label for="confirm_password" class="placeholder">Confirm Password</label>
+    </div>
+    <button class="submit" type="submit" value="Sign Up" name="action">
+      Sign Up
+    </button>
+    <div class="subtitle-small">
+      Already have an account? Log in
+      <a class="here-link" href="{{ url_for('login') }}">here</a>
+    </div>
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+  </div>
+</form>
+{% endblock %}

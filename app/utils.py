@@ -19,7 +19,7 @@ def send_email(classCodes, department, courseNumber, email):
     "from": "noreply@uciclasswatcher.com",
     "to": email,
     "subject": f"SPOT OPEN IN {department} {courseNumber}!",
-    "html": f"<p>Class code(s): {', '.join(classCodes)}<br>Don't forget to enroll in all coclasses!</p>"})
+    "html": f"<p>Class code(s): {', '.join(classCodes)}<br>Enroll <a href='https://www.reg.uci.edu/cgi-bin/webreg-redirect.sh'>here</a><br><br>Don't forget to enroll in all coclasses!</p>"})
 
     print(f"Email sent to {email} for {department} {courseNumber}")
 
@@ -28,7 +28,7 @@ def test_email(message):
     "from": "noreply@uciclasswatcher.com",
     "to": "uciclasswatcher@gmail.com",
     "subject": "test email",
-    "html": "<p>Email was sent to student</p>"})
+    "html": f"<p>{message}</p>"})
 
     print("Email sent to admin")
 
@@ -42,26 +42,28 @@ def notify_students(found: dict):
     for department, courses in found.items():
         for courseNumber, classCodes in courses.items():
             cursor.execute("""
-                SELECT email FROM users
-                WHERE course_number = %s AND department = %s;
-            """, (courseNumber, department))
+                SELECT users.id, users.email, users.password_hash
+                FROM watching
+                JOIN users ON watching.user_id = users.id
+                WHERE watching.department = %s AND watching.course_number = %s;
+            """, (department, courseNumber))
 
             rows = cursor.fetchall()
-            emails = [row[0] for row in rows]
-
-            for email in emails:
-                send_email(classCodes, department, courseNumber, email)
+            for row in rows:
+                send_email(classCodes, department, courseNumber, row[1])
                 time.sleep(1)
 
+                # update notification table
                 cursor.execute("""
                     INSERT INTO notifications_sent (email, department, course_number, class_codes)
                     VALUES (%s, %s, %s, %s);
-                """, (email, department, courseNumber, ', '.join(classCodes)))
+                """, (row[1], department, courseNumber, ', '.join(classCodes)))
 
             cursor.execute("""
-                DELETE FROM users
-                WHERE course_number = %s AND department = %s;
-            """, (courseNumber, department))
+                DELETE FROM watching
+                WHERE department = %s and course_number = %s;
+            """, (department, courseNumber))
+
 
     conn.commit()
     cursor.close()
@@ -75,7 +77,7 @@ def get_watched_department():
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT DISTINCT department, course_number FROM users;""")
+        SELECT DISTINCT department, course_number FROM watching;""")
     rows = cursor.fetchall()
     for department, course_number in rows:
         if department in department_courses:
@@ -133,7 +135,7 @@ def get_stats():
     # Most watched courses
     cursor.execute("""
         SELECT department, course_number, COUNT(*) as watch_count
-        FROM users
+        FROM watching
         GROUP BY department, course_number
         ORDER BY watch_count DESC
         LIMIT 5;
@@ -158,3 +160,19 @@ def get_stats():
     conn.close()
 
     return stats
+
+def watching_one_class(email):
+    """Returns True if the current user is watching only one class"""
+    conn = get_db_conn()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT COUNT(*) FROM watching w, users u
+        WHERE w.user_id = u.id AND u.email = %s;
+    """, (email,))
+
+    count = cursor.fetchone()[0]
+    cursor.close()
+    conn.close()
+
+    return count >= 1

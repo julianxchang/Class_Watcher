@@ -155,7 +155,7 @@ footer {
   height: auto;
   max-height: 550px;
   padding: 40px 20px 0 20px;
-  width: 320px;
+  width: 400px;
   overflow-y: auto;
   gap: 20px;
   align-items: center;
@@ -271,11 +271,19 @@ select.input option {
   width: 50px;
 }
 
-.cut-short {
+.email-cut {
   width: 47px;
 }
 
-.cut-medium {
+.password-cut {
+  width: 68px;
+}
+
+.confirm-password-cut {
+  width: 105px;
+}
+
+.department-cut {
   width: 75px;
 }
 
@@ -283,7 +291,7 @@ select.input option {
   width: 85px;
 }
 
-.cut-long {
+.coursenum-cut {
   width: 188px;
 }
 .input:focus ~ .cut,
@@ -340,9 +348,7 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   top: 19px;
 }
 
-.home-button,
-.contact-button,
-.stats-button {
+.nav-button {
   display: inline-block;
   background-color: transparent;
   border: none;
@@ -359,16 +365,12 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   margin: 0 16px;
 }
 
-.home-button:hover,
-.contact-button:hover,
-.stats-button:hover {
+.nav-button:hover {
   background-color: transparent;
   border-bottom: 2px solid #eee;
 }
 
-.home-button:active,
-.stats-button:active,
-.contact-button:active {
+.nav-button:active {
   background-color: transparent;
 }
 

@@ -25,9 +25,15 @@
           <span></span>
         </button>
         <div class="nav-menu" id="navMenu">
-          <a class="home-button" href="{{ url_for('index') }}">Home</a>
-          <a class="stats-button" href="{{ url_for('stats') }}">Stats</a>
-          <a class="contact-button" href="{{ url_for('contact') }}">Contact</a>
+          <a class="nav-button" href="{{ url_for('index') }}">Home</a>
+          <a class="nav-button" href="{{ url_for('dashboard') }}">Dashboard</a>
+          <a class="nav-button" href="{{ url_for('stats') }}">Stats</a>
+          <a class="nav-button" href="{{ url_for('contact') }}">Contact</a>
+          {% if current_user.is_authenticated %}
+          <a class="nav-button" href="{{ url_for('logout') }}">Logout</a>
+          {% else %}
+          <a class="nav-button" href="{{ url_for('login') }}">Login</a>
+          {% endif %}
         </div>
       </nav>
     </header>
