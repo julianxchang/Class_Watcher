@@ -1,8 +1,7 @@
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
-from . import db
 from app import app
 from werkzeug.security import generate_password_hash, check_password_hash
 from .utils import get_stats

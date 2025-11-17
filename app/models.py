@@ -7,8 +7,8 @@ class User(UserMixin):
         self.email = email
         self.password = password_hash
 
-    @staticmethod
-    def get(user_id):
+    @classmethod
+    def get(cls, user_id):
         conn = get_db_conn()
         cur = conn.cursor()
         cur.execute("SELECT id, email, password_hash FROM users WHERE id = %s", (user_id,))
@@ -17,25 +17,25 @@ class User(UserMixin):
         conn.close()
 
         if row:
-            return User(id=row[0], email=row[1], password_hash=row[2])
+            return cls(id=row[0], email=row[1], password_hash=row[2])
         return None
 
-    @staticmethod
-    def get_by_email(email):
+    @classmethod
+    def get_by_email(cls, email):
         """Check if user already exists (has both email and password)"""
         conn = get_db_conn()
         cur = conn.cursor()
-        cur.execute("SELECT id, email, password_hash FROM users WHERE email = %s", (email,))
+        cur.execute("SELECT id, email, password_hash FROM users WHERE email = %s AND password_hash IS NOT NULL", (email,))
         row = cur.fetchone()
         cur.close()
         conn.close()
 
-        if row and row[2] is not None:
-            return User(id=row[0], email=row[1], password_hash=row[2])
+        if row:
+            return cls(id=row[0], email=row[1], password_hash=row[2])
         return None
 
-    @staticmethod
-    def create(email, password_hash):
+    @classmethod
+    def create(cls, email, password_hash):
         """Create a new user OR update anonymous user with password"""
         conn = get_db_conn()
         cur = conn.cursor()
@@ -61,4 +61,4 @@ class User(UserMixin):
         conn.commit()
         cur.close()
         conn.close()
-        return User(id=user_id, email=email, password_hash=password_hash)
+        return cls(id=user_id, email=email, password_hash=password_hash)

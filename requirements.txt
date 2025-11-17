@@ -6,3 +6,4 @@ resend
 bs4
 psutil
 flask-login
+flask-limiter

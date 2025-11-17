@@ -1,5 +1,5 @@
 from flask import render_template, request
-from app import app
+from app import app, limiter
 from app.db import get_db_conn
 from app.utils import send_confirmation_email, contact_message, get_stats, watching_one_class
 import re
@@ -100,6 +100,8 @@ def run_code():
 @app.route('/send_email', methods=['POST'])
 def send_email():
     if request.method == 'POST':
+        if request.form.get("phone"):
+            return "bot detected", 400
         email = request.form.get('email').lower()
         message = request.form.get('message')
         contact_message(email, message)
@@ -115,6 +117,7 @@ def changelog():
     return render_template('changelog.html')
 
 @app.route('/contact')
+@limiter.limit("5 per hour")
 def contact():
     return render_template('contact.html')
 
@@ -130,5 +133,4 @@ def stats():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    stats_data = get_stats()
-    return render_template('dashboard.html', stats=stats_data)
+    return render_template('dashboard.html')
