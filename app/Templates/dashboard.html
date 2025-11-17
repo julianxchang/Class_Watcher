@@ -1,37 +1,17 @@
-{% extends "base.html" %} {% block title %}Stats - UCI Class Watcher{% endblock
-%} {% block content %}
-<div class="form">
-  <div class="title">Stats</div>
-
-  <div class="stat-item">
-    <div class="stat-number">{{ stats.total_notifications }}</div>
-    <div class="stat-label">Total Notifications Sent</div>
-  </div>
-
-  <div class="stat-item">
-    <div class="stat-number">{{ stats.current_watchers }}</div>
-    <div class="stat-label">Currently Watching</div>
-  </div>
-
-  <div class="stat-item">
-    <div class="stat-number">{{ stats.notifications_today }}</div>
-    <div class="stat-label">Notifications Sent Today</div>
-  </div>
-
-  <div class="stat-item">
-    <div class="stat-number">{{ stats.notifications_this_week }}</div>
-    <div class="stat-label">Notifications Sent This Week</div>
-  </div>
-
-  {% if stats.top_courses %}
-  <div class="subtitle" style="margin-top: 20px">Most Watched Courses</div>
-  {% for department, course_number, count in stats.top_courses %}
-  <div class="course-stat-item">
-    <span class="course-name">{{ department }} {{ course_number }}</span>
-    <span class="course-count"
-      >{{ count }} watcher{{ 's' if count != 1 else '' }}</span
+{% extends "base.html" %} {% block title %}Dashboard- UCI Class Watcher{%
+endblock %} {% block content %}
+<form action="/home">
+  <div class="form">
+    <div class="title">Coming Soon</div>
+    <div class="subtitle">Dashboard is under construction.</div>
+    <button
+      class="submit"
+      type="submit"
+      value="Watch Another Class"
+      name="action"
     >
+      Back to Home
+    </button>
   </div>
-  {% endfor %} {% endif %}
-</div>
+</form>
 {% endblock %}
