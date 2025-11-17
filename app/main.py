@@ -93,15 +93,16 @@ def run_code():
 
         print(email)
         print(department, courseNumber)
-        return render_template('landingpage.html')
+        return render_template('landingpage.html', department=department, courseNumber=courseNumber)
 
     return render_template('index.html')
 
 @app.route('/send_email', methods=['POST'])
 def send_email():
     if request.method == 'POST':
+        email = request.form.get('email').lower()
         message = request.form.get('message')
-        contact_message(message)
+        contact_message(email, message)
         return render_template('sent.html')
 
 

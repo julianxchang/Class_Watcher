@@ -6,18 +6,34 @@ endblock %} {% block content %}
     <div class="subtitle">
       Enter information below to start watching a class
     </div>
+    {% if current_user.is_authenticated %}
     <div class="input-container ic1">
       <input
         id="email"
         class="input"
         type="email"
-        placeholder=" "
+        placeholder=""
+        name="email"
+        value="{{ current_user.email }}"
+        required
+      />
+      <div class="cut email-cut"></div>
+      <label for="email" class="placeholder">Email</label>
+    </div>
+    {% else %}
+    <div class="input-container ic1">
+      <input
+        id="email"
+        class="input"
+        type="email"
+        placeholder=""
         name="email"
         required
       />
       <div class="cut email-cut"></div>
       <label for="email" class="placeholder">Email</label>
     </div>
+    {% endif %}
     <div class="input-container ic2" style="position: relative">
       <input
         id="department"

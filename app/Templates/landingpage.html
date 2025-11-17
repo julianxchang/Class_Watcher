@@ -1,9 +1,14 @@
 {% extends "base.html" %} {% block title %}Success - UCI Class Watcher{%
 endblock %} {% block content %}
 <form action="/home">
-  <div class="form">
-    <div class="title">Success</div>
-    <div class="subtitle">You will receive an email when a spot opens up!</div>
+  <div class="form-success">
+    <div class="title">Successfully started watching</div>
+    <div class="subtitle successful-class">
+      {{ department }} {{ courseNumber }}
+    </div>
+    <div class="subtitle-small">
+      You will receive an email when a spot opens up!
+    </div>
     <button
       class="submit"
       type="submit"

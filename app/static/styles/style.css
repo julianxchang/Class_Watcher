@@ -179,6 +179,23 @@ footer {
   gap: 20px;
 }
 
+.form-success {
+  background-color: #15172b;
+  border-radius: 20px;
+  box-sizing: border-box;
+  height: auto;
+  min-height: 200px;
+  padding: 40px 20px;
+  width: 400px;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+
 .title {
   color: #eee;
   font-size: 36px;
@@ -317,7 +334,7 @@ select.input option {
   color: #808097;
 }
 .input:focus ~ .placeholder {
-  color: #dc2f55;
+  color: #08d;
 }
 
 select.input:focus ~ .cut {
@@ -326,7 +343,7 @@ select.input:focus ~ .cut {
 
 select.input:focus ~ .placeholder {
   transform: translateY(-30px) translateX(10px) scale(0.75);
-  color: #dc2f55;
+  color: #08d;
 }
 
 select.input[data-selected="true"] ~ .cut {
@@ -350,7 +367,6 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
 
 .nav-button {
   display: inline-block;
-  background-color: transparent;
   border: none;
   border-bottom: 2px solid transparent;
   border-radius: 0;
@@ -365,13 +381,36 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   margin: 0 16px;
 }
 
-.nav-button:hover {
-  background-color: transparent;
-  border-bottom: 2px solid #eee;
+.login {
+  background-color: #08b;
+  border-radius: 12px;
+  width: 80px;
 }
 
-.nav-button:active {
-  background-color: transparent;
+.login:hover {
+  background-color: #07b;
+}
+
+.login:active {
+  background-color: #06b;
+}
+
+.logout {
+  background-color: rgb(255, 86, 86);
+  border-radius: 12px;
+  width: 80px;
+}
+
+.logout:hover {
+  background-color: rgb(216, 32, 47);
+}
+
+.logout:active {
+  background-color: rgb(209, 0, 31);
+}
+
+.nav-button:hover:not(.login):not(.logout) {
+  border-bottom: 2px solid #eee;
 }
 
 .submit {
@@ -516,6 +555,12 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   font-size: 36px;
   font-weight: 700;
   margin: 0 0 5px 0;
+}
+
+.successful-class {
+  color: #08d;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 .stat-label {

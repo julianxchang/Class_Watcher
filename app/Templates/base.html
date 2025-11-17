@@ -30,9 +30,9 @@
           <a class="nav-button" href="{{ url_for('stats') }}">Stats</a>
           <a class="nav-button" href="{{ url_for('contact') }}">Contact</a>
           {% if current_user.is_authenticated %}
-          <a class="nav-button" href="{{ url_for('logout') }}">Logout</a>
+          <a class="nav-button logout" href="{{ url_for('logout') }}">Logout</a>
           {% else %}
-          <a class="nav-button" href="{{ url_for('login') }}">Login</a>
+          <a class="nav-button login" href="{{ url_for('login') }}">Login</a>
           {% endif %}
         </div>
       </nav>
