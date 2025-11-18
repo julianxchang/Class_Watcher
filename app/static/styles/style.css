@@ -447,6 +447,13 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   text-align: center;
 }
 
+.success-message {
+  color: #66ff66;
+  font-size: 14px;
+  margin-top: 20px;
+  text-align: center;
+}
+
 .home-link {
   color: white;
   text-decoration: none;

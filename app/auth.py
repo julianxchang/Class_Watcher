@@ -52,7 +52,7 @@ def signup_post():
 
     User.create(email=email, password_hash=generate_password_hash(password))
 
-    return render_template('login.html')
+    return render_template('login.html', success = "Account created successfully! Please log in.")
 
 @app.route('/logout')
 @login_required
