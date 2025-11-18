@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
 from app import app
 from werkzeug.security import generate_password_hash, check_password_hash
-from .utils import get_stats
+from .utils import get_user_stats
 
 @app.route('/login')
 def login():
@@ -14,8 +14,8 @@ def login():
 def login_post():
 
     if current_user.is_authenticated:
-        stats = get_stats()
-        return render_template('dashboard.html', stats=stats)
+        user_stats = get_user_stats(current_user.email)
+        return render_template('dashboard.html', stats=user_stats)
 
     email = request.form.get('email').lower()
     password = request.form.get('password')
@@ -27,8 +27,8 @@ def login_post():
         return render_template('login.html', error='Please check your login details and try again.')
 
     login_user(user)
-    stats = get_stats()
-    return render_template('dashboard.html', stats=stats)
+    user_stats = get_user_stats(email)
+    return render_template('dashboard.html', stats=user_stats)
 
 @app.route('/signup')
 def signup():

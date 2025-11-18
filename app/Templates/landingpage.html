@@ -1,22 +1,26 @@
 {% extends "base.html" %} {% block title %}Success - UCI Class Watcher{%
 endblock %} {% block content %}
-<form action="/home">
-  <div class="form-success">
-    <div class="title">Successfully started watching</div>
-    <div class="subtitle successful-class">
-      {{ department }} {{ courseNumber }}
-    </div>
-    <div class="subtitle-small">
-      You will receive an email when a spot opens up!
-    </div>
-    <button
-      class="submit"
-      type="submit"
-      value="Watch Another Class"
-      name="action"
-    >
-      Watch Another Class
-    </button>
+<div class="form-success">
+  <div class="title successful">Started watching</div>
+  <div class="subtitle successful-class">
+    {{ department }} {{ courseNumber }}
   </div>
-</form>
+  <div class="subtitle-small">
+    You will receive an email when a spot opens up!
+  </div>
+  <a
+    href="{{ url_for('dashboard') }}"
+    class="submit"
+    style="display: block; text-decoration: none; line-height: 50px"
+  >
+    Go to Dashboard
+  </a>
+  <a
+    href="{{ url_for('index') }}"
+    class="submit"
+    style="display: block; text-decoration: none; line-height: 50px"
+  >
+    Watch Another Class
+  </a>
+</div>
 {% endblock %}

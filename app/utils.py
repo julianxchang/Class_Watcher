@@ -138,7 +138,7 @@ def get_stats():
         FROM watching
         GROUP BY department, course_number
         ORDER BY watch_count DESC
-        LIMIT 5;
+        LIMIT 10;
     """)
     stats['top_courses'] = cursor.fetchall()
 
@@ -155,6 +155,49 @@ def get_stats():
         WHERE sent_at >= CURRENT_DATE - INTERVAL '7 days';
     """)
     stats['notifications_this_week'] = cursor.fetchone()[0]
+
+    cursor.close()
+    conn.close()
+
+    return stats
+
+def get_user_stats(email):
+    """Returns statistics for a specific user"""
+    conn = get_db_conn()
+    cursor = conn.cursor()
+
+    stats = {}
+
+    # Total notifications sent to user
+    cursor.execute("""
+        SELECT COUNT(*) FROM notifications_sent
+        WHERE email = %s;
+    """, (email,))
+    stats['total_notifications'] = cursor.fetchone()[0]
+
+    # Currently watching count
+    cursor.execute("""
+        SELECT COUNT(*) FROM watching w
+        JOIN users u ON w.user_id = u.id
+        WHERE u.email = %s;
+    """, (email,))
+    stats['currently_watching'] = cursor.fetchone()[0]
+
+    # Notifications this week
+    cursor.execute("""
+        SELECT COUNT(*) FROM notifications_sent
+        WHERE email = %s
+        AND sent_at >= CURRENT_DATE - INTERVAL '7 days';
+    """, (email,))
+    stats['notifications_this_week'] = cursor.fetchone()[0]
+
+    # Notifications today
+    cursor.execute("""
+        SELECT COUNT(*) FROM notifications_sent
+        WHERE email = %s
+        AND sent_at >= CURRENT_DATE;
+    """, (email,))
+    stats['notifications_today'] = cursor.fetchone()[0]
 
     cursor.close()
     conn.close()
@@ -188,8 +231,8 @@ def add_to_watching(email, department, courseNumber) -> bool:
     cursor = conn.cursor()
 
     cursor.execute("""
-        INSERT INTO users (email, password_hash) 
-        VALUES (%s, NULL) 
+        INSERT INTO users (email, password_hash)
+        VALUES (%s, NULL)
         ON CONFLICT (email) DO NOTHING
         RETURNING id;
     """, (email,))
@@ -211,8 +254,27 @@ def add_to_watching(email, department, courseNumber) -> bool:
     # Check if the row was actually inserted
     if cursor.rowcount == 0:
         conn.rollback()
+        cursor.close()
+        conn.close()
         return False
     conn.commit()
-    return True
     cursor.close()
     conn.close()
+    return True
+
+def get_watched_courses(email):
+    """ Returns a list of courses that the user is watching """
+    conn = get_db_conn()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT w.department, w.course_number
+        FROM watching w
+        JOIN users u ON w.user_id = u.id
+        WHERE u.email = %s;
+    """, (email,))
+
+    courses = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return courses

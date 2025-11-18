@@ -179,6 +179,11 @@ footer {
   gap: 20px;
 }
 
+.form-stats {
+  width: 800px;
+  max-width: 90vw;
+}
+
 .form-success {
   background-color: #15172b;
   border-radius: 20px;
@@ -203,6 +208,10 @@ footer {
   margin-top: 0;
   margin-bottom: 0;
   text-align: center;
+}
+
+.title.successful {
+  font-size: 30px;
 }
 
 .form-changelog .title {
@@ -561,6 +570,7 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   color: #08d;
   font-size: 20px;
   font-weight: 600;
+  padding-bottom: 10px;
 }
 
 .stat-label {
@@ -657,7 +667,22 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   }
 }
 
-/* Stats page specific styles */
+.stats-container {
+  display: flex;
+  gap: 30px;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.stats-left,
+.stats-right {
+  flex: 1;
+}
+
+.stats-right .subtitle {
+  margin-bottom: 15px;
+}
+
 .stat-item {
   width: 100%;
   padding: 15px 0;
@@ -708,6 +733,27 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   font-weight: 600;
 }
 
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .stats-container {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .stats-left,
+  .stats-right {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stats-right .subtitle {
+    text-align: center;
+  }
+}
+
 /* Autocomplete dropdown */
 .autocomplete-dropdown {
   display: none;
@@ -742,4 +788,49 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
 .autocomplete-item.selected {
   background-color: #08d;
   color: #fff;
+}
+
+/* Dashboard watched classes */
+.watched-classes-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.watched-class-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.class-info {
+  color: #eee;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.unwatch-btn {
+  background-color: #ff5656;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  transition: background-color 0.3s ease;
+}
+
+.unwatch-btn:hover {
+  background-color: #d81f2f;
+}
+
+.unwatch-btn:active {
+  background-color: #d1001f;
 }
