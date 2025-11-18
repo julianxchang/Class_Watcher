@@ -176,3 +176,43 @@ def watching_one_class(email):
     conn.close()
 
     return count >= 1
+
+def add_to_watching(email, department, courseNumber) -> bool:
+    """
+    Adds a class to the user's watching list
+    If user does not exist, create the user
+    If user is already watching return False
+    Returns True if successfully added
+    """
+    conn = get_db_conn()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO users (email, password_hash) 
+        VALUES (%s, NULL) 
+        ON CONFLICT (email) DO NOTHING
+        RETURNING id;
+    """, (email,))
+
+    result = cursor.fetchone()
+    if result:
+        user_id = result[0]
+    else:
+        # User already exists, get their id
+        cursor.execute("SELECT id FROM users WHERE email = %s", (email,))
+        user_id = cursor.fetchone()[0]
+
+    cursor.execute("""
+        INSERT INTO watching (user_id, department, course_number)
+        VALUES (%s, %s, %s)
+        ON CONFLICT (user_id, department, course_number) DO NOTHING;
+    """, (user_id, department, courseNumber))
+
+    # Check if the row was actually inserted
+    if cursor.rowcount == 0:
+        conn.rollback()
+        return False
+    conn.commit()
+    return True
+    cursor.close()
+    conn.close()
