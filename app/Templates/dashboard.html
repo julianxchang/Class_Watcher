@@ -1,17 +1,67 @@
-{% extends "base.html" %} {% block title %}Dashboard- UCI Class Watcher{%
+{% extends "base.html" %} {% block title %}Dashboard - UCI Class Watcher{%
 endblock %} {% block content %}
-<form action="/home">
-  <div class="form">
-    <div class="title">Coming Soon</div>
-    <div class="subtitle">Dashboard is under construction.</div>
-    <button
-      class="submit"
-      type="submit"
-      value="Watch Another Class"
-      name="action"
-    >
-      Back to Home
-    </button>
+<div class="form form-stats">
+  <div class="title">Dashboard</div>
+  <div class="stats-container">
+    <div class="stats-left">
+      <div class="subtitle">Currently Watching</div>
+      {% if watched_classes %}
+      <div class="watched-classes-list">
+        {% for class in watched_classes %}
+        <div class="watched-class-item">
+          <span class="class-info">{{ class[0] }} {{ class[1] }}</span>
+          <form method="POST" action="/remove_watch" style="display: inline">
+            <input type="hidden" name="department" value="{{ class[0] }}" />
+            <input type="hidden" name="course_number" value="{{ class[1] }}" />
+            <button type="submit" class="unwatch-btn">Remove</button>
+          </form>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="subtitle-small" style="margin-top: 20px">
+        You are not watching any classes yet.
+      </div>
+      <a
+        class="submit"
+        style="
+          display: block;
+          text-decoration: none;
+          line-height: 50px;
+          width: 300px;
+          margin: 10px auto 0 auto;
+          text-align: center;
+        "
+        href="{{ url_for('index') }}"
+      >
+        Watch a Class
+      </a>
+      {% endif %}
+    </div>
+
+    <div class="stats-right">
+      <div class="subtitle">Your Stats</div>
+
+      <div class="stat-item">
+        <div class="stat-number">{{ stats.currently_watching }}</div>
+        <div class="stat-label">Classes Watching</div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-number">{{ stats.total_notifications }}</div>
+        <div class="stat-label">Total Notifications</div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-number">{{ stats.notifications_this_week }}</div>
+        <div class="stat-label">Notifications This Week</div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-number">{{ stats.notifications_today }}</div>
+        <div class="stat-label">Notifications Today</div>
+      </div>
+    </div>
   </div>
-</form>
+</div>
 {% endblock %}

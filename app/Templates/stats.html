@@ -1,37 +1,48 @@
 {% extends "base.html" %} {% block title %}Stats - UCI Class Watcher{% endblock
 %} {% block content %}
-<div class="form">
+<div class="form form-stats">
   <div class="title">Stats</div>
 
-  <div class="stat-item">
-    <div class="stat-number">{{ stats.total_notifications }}</div>
-    <div class="stat-label">Total Notifications Sent</div>
-  </div>
+  <div class="stats-container">
+    <div class="stats-left">
+      <div class="subtitle">Top 10 Watched Courses</div>
+      {% if stats.top_courses %} {% for department, course_number, count in
+      stats.top_courses %}
+      <div class="course-stat-item">
+        <span class="course-name">{{ department }} {{ course_number }}</span>
+        <span class="course-count"
+          >{{ count }} watcher{{ 's' if count != 1 else '' }}</span
+        >
+      </div>
+      {% endfor %} {% else %}
+      <div class="subtitle-small" style="margin-top: 20px">
+        No courses are being watched currently.
+      </div>
+      {% endif %}
+    </div>
 
-  <div class="stat-item">
-    <div class="stat-number">{{ stats.current_watchers }}</div>
-    <div class="stat-label">Currently Watching</div>
-  </div>
+    <div class="stats-right">
+      <div class="subtitle">Global Stats</div>
+      <div class="stat-item">
+        <div class="stat-number">{{ stats.total_notifications }}</div>
+        <div class="stat-label">Total Notifications Sent</div>
+      </div>
 
-  <div class="stat-item">
-    <div class="stat-number">{{ stats.notifications_today }}</div>
-    <div class="stat-label">Notifications Sent Today</div>
-  </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ stats.current_watchers }}</div>
+        <div class="stat-label">Currently Watching</div>
+      </div>
 
-  <div class="stat-item">
-    <div class="stat-number">{{ stats.notifications_this_week }}</div>
-    <div class="stat-label">Notifications Sent This Week</div>
-  </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ stats.notifications_today }}</div>
+        <div class="stat-label">Notifications Sent Today</div>
+      </div>
 
-  {% if stats.top_courses %}
-  <div class="subtitle" style="margin-top: 20px">Most Watched Courses</div>
-  {% for department, course_number, count in stats.top_courses %}
-  <div class="course-stat-item">
-    <span class="course-name">{{ department }} {{ course_number }}</span>
-    <span class="course-count"
-      >{{ count }} watcher{{ 's' if count != 1 else '' }}</span
-    >
+      <div class="stat-item">
+        <div class="stat-number">{{ stats.notifications_this_week }}</div>
+        <div class="stat-label">Notifications Sent This Week</div>
+      </div>
+    </div>
   </div>
-  {% endfor %} {% endif %}
 </div>
 {% endblock %}

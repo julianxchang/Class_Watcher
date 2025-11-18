@@ -1,7 +1,7 @@
 from flask import render_template, request
 from app import app, limiter
 from app.db import get_db_conn
-from app.utils import send_confirmation_email, contact_message, get_stats, watching_one_class
+from app.utils import add_to_watching, send_confirmation_email, contact_message, get_stats, watching_one_class, add_to_watching, get_watched_courses, get_user_stats
 import re
 from flask_login import current_user, login_required
 
@@ -34,8 +34,8 @@ VALID_DEPARTMENTS = set([
 def index():
     return render_template('index.html')
 
-@app.route('/run', methods=['GET', 'POST'])
-def run_code():
+@app.route('/add_watch', methods=['GET', 'POST'])
+def add_watch():
     if request.method == 'POST':
         email = request.form.get('email').lower()
         department = request.form.get('department')
@@ -51,51 +51,35 @@ def run_code():
         if not current_user.is_authenticated and watching_one_class(email):
             return render_template('index.html', error="Sign up to watch more than 1 class!")
 
-        conn = get_db_conn()
-        cursor = conn.cursor()
-
-        # Get or create user
-        cursor.execute("SELECT id FROM users WHERE email = %s", (email,))
-        row = cursor.fetchone()
-
-        if row is None:
-            # Create new user with NULL password
-            cursor.execute(
-                "INSERT INTO users (email, password_hash) VALUES (%s, NULL) RETURNING id",
-                (email,)
-            )
-            user_id = cursor.fetchone()[0]
-        else:
-            user_id = row[0]
-
-        # Check if already watching this class
-        cursor.execute("""
-            SELECT * FROM watching
-            WHERE user_id = %s AND course_number = %s AND department = %s;
-        """, (user_id, courseNumber, department))
-
-        if cursor.fetchone() is not None:
-            cursor.close()
-            conn.close()
-            return render_template('index.html', error="You are already watching this class")
-
-        # Insert into watching table
-        cursor.execute("""
-            INSERT INTO watching (user_id, department, course_number)
-            VALUES (%s, %s, %s);
-        """, (user_id, department, courseNumber))
+        if(not add_to_watching(email, department, courseNumber)):
+            return render_template('index.html', error="You are already watching this class!")
 
         send_confirmation_email(email, department, courseNumber)
 
-        conn.commit()
-        cursor.close()
-        conn.close()
-
-        print(email)
-        print(department, courseNumber)
+        print(f"{email} started watching {department} {courseNumber}")
         return render_template('landingpage.html', department=department, courseNumber=courseNumber)
 
     return render_template('index.html')
+
+@app.route('/remove_watch', methods=['POST'])
+@login_required
+def remove_watch():
+    from flask import redirect, url_for
+    department = request.form.get('department')
+    courseNumber = request.form.get('course_number')
+    conn = get_db_conn()
+    cur = conn.cursor()
+    cur.execute("""
+        DELETE FROM watching
+        WHERE user_id = (SELECT id FROM users WHERE email = %s)
+        AND department = %s
+        AND course_number = %s
+    """, (current_user.email, department, courseNumber))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return render_template('dashboard.html', watched_classes=get_watched_courses(current_user.email), stats=get_user_stats(current_user.email))
 
 @app.route('/send_email', methods=['POST'])
 def send_email():
@@ -106,11 +90,6 @@ def send_email():
         message = request.form.get('message')
         contact_message(email, message)
         return render_template('sent.html')
-
-
-@app.route('/home')
-def func():
-    return render_template('index.html')
 
 @app.route('/changelog')
 def changelog():
@@ -133,4 +112,6 @@ def stats():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    watched_classes = get_watched_courses(current_user.email)
+    user_stats = get_user_stats(current_user.email)
+    return render_template('dashboard.html', watched_classes=watched_classes, stats=user_stats)
