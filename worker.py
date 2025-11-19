@@ -13,7 +13,7 @@ def run_task():
 
     for idx, department in enumerate(watched_departments):
         if idx > 0:
-            time.sleep(2)  # 2 second delay between department fetches
+            time.sleep(5)  # 5 second delay between department fetches
         found[department] = {}
         html = fetch_department(department)
         if not html:

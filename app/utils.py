@@ -101,7 +101,7 @@ def fetch_department(department, term="2026-03"):
         "Submit": "Submit",
     }
     try:
-        response = requests.post(url, data=payload, timeout=30)
+        response = requests.post(url, data=payload, timeout=10)
         response.raise_for_status()
         html = response.text
         return html
