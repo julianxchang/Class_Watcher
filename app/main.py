@@ -1,7 +1,7 @@
 from flask import render_template, request
 from app import app, limiter
 from app.db import get_db_conn
-from app.utils import add_to_watching, send_confirmation_email, contact_message, get_stats, watching_one_class, add_to_watching, get_watched_courses, get_user_stats, get_notification_history, get_dashboard_data
+from app.utils import add_to_watching, send_confirmation_email, contact_message, get_stats, watching_one_class, add_to_watching, get_dashboard_data
 import re
 from flask_login import current_user, login_required
 

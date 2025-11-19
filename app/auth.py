@@ -4,7 +4,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
 from app import app
 from werkzeug.security import generate_password_hash, check_password_hash
-from .utils import get_user_stats, get_watched_courses, get_notification_history
 
 @app.route('/login')
 def login():
