@@ -70,7 +70,7 @@ def notify_students(found: dict):
     release_db_conn(conn)
 
 def get_watched_department():
-    """ Returns a dictionary mapping departments to a list of watched course numbers """
+    """ Returns a dictionary mapping departments to a set of watched course numbers """
     department_courses = {}
 
     conn = get_db_conn()
@@ -81,9 +81,9 @@ def get_watched_department():
     rows = cursor.fetchall()
     for department, course_number in rows:
         if department in department_courses:
-            department_courses[department].append(course_number)
+            department_courses[department].add(course_number)
         else:
-            department_courses[department] = [course_number]
+            department_courses[department] = set([course_number])
     cursor.close()
     release_db_conn(conn)
     return department_courses

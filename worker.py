@@ -30,30 +30,47 @@ def run_task():
             continue
         table = tables[0].find_all('tr')
         i = 0
+
         while i < len(table):
-            checkRow = table[i].find(attrs={'class': 'CourseTitle'})
-            if checkRow:
-                text = checkRow.get_text().lower()
-                for course in watched_departments[department]:
-                    pattern = rf"{department.lower()}\s+{course.lower()}\s+"
-                    if re.search(pattern, text):
-                        print(f">>> Matched course: {department} {course}")
-                        j = i + 1
-                        while j < len(table):
-                            course_titles = table[j].find_all(attrs={'class': 'CourseTitle'})
-                            if course_titles:
-                                i = j - 1
-                                break
-                            rows = table[j].find_all('td')
-                            if rows:
-                                if len(rows) > 10 and rows[1].text == "Lec" and rows[-1].text == "OPEN":
-                                    classCode = rows[0].text
-                                    print(f"Found open lecture: {department} {classCode}")
-                                    if course in found[department]:
-                                        found[department][course].append(classCode)
-                                    else:
-                                        found[department][course] = [classCode]
-                            j += 1
+            title_cell = table[i].find(attrs={'class': 'CourseTitle'})
+            if title_cell:
+                title_text = title_cell.get_text().lower()
+
+                j = i + 1
+                while j < len(table) and not table[j].find(attrs={'class': 'CourseTitle'}):
+                    rows = table[j].find_all("td")
+                    if not rows or len(rows) < 10:
+                        j += 1
+                        continue
+
+                    class_code = rows[0].text
+                    if class_code in watched_departments[department]:
+                        print(f"Matched CLASS CODE: {class_code}")
+                    class_type = rows[1].text
+                    status = rows[-1].text
+
+                    if status == "FULL":
+                        j += 1
+                        continue
+
+                    if class_code in watched_departments[department]:
+                        if class_code in found[department]:
+                            found[department][class_code].append(class_code)
+                        else:
+                            found[department][class_code] = [class_code]
+                        print(f"Matched CLASS CODE open: {class_code}")
+                    else:
+                        for course in watched_departments[department]:
+                            is_course_number = not (course.isdigit() and len(course) == 5)
+                            course_number_pattern = rf"{department.lower()}\s+{course.lower()}\s+"
+                            matched_title = re.search(course_number_pattern, title_text)
+                            if is_course_number and matched_title and class_type == "Lec":
+                                if course in found[department]:
+                                    found[department][course].append(class_code)
+                                else:
+                                    found[department][course] = [class_code]
+                                print(f"Matched COURSE NUMBER open lecture: {department} {course} ({class_code})")
+                    j += 1
             i += 1
     if found:
         notify_students(found)
