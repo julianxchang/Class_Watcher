@@ -15,6 +15,7 @@ def run_task():
         if idx > 0:
             time.sleep(5)  # 5 second delay between department fetches
         found[department] = {}
+        print(f"Fetching department: {department}")
         html = fetch_department(department)
         if not html:
             print(f"Error fetching {department} department.")
