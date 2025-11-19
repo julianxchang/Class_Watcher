@@ -100,11 +100,14 @@ def fetch_department(department, term="2026-03"):
         "CourseCodes": "",
         "Submit": "Submit",
     }
-
-    response = requests.post(url, data=payload)
-    response.raise_for_status()
-    html = response.text
-    return html
+    try:
+        response = requests.post(url, data=payload, timeout=30)
+        response.raise_for_status()
+        html = response.text
+        return html
+    except requests.RequestException as e:
+        print(f"Error fetching department {department}: {e}")
+        return None
 
 def contact_message(email, message):
     load_dotenv()

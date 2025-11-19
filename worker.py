@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-import re, os
+import re, os, time
 from app.utils import get_watched_department, notify_students, fetch_department
 
 def run_task():
@@ -11,9 +11,15 @@ def run_task():
 
     print("Watched departments and courses:", watched_departments)
 
-    for department in watched_departments:
+    for idx, department in enumerate(watched_departments):
+        if idx > 0:
+            time.sleep(2)  # 2 second delay between department fetches
         found[department] = {}
         html = fetch_department(department)
+        if not html:
+            print(f"Error fetching {department} department.")
+            continue
+
         soup = BeautifulSoup(html, 'html.parser')
 
         tables = soup.find_all(class_='course-list')
@@ -24,7 +30,6 @@ def run_task():
         table = tables[0].find_all('tr')
         i = 0
         while i < len(table):
-            # checkRow = table[i].find(class_="CourseTitle")  # first check if this contains Course Titla
             checkRow = table[i].find(attrs={'class': 'CourseTitle'})
             if checkRow:
                 text = checkRow.get_text().lower()
@@ -34,7 +39,6 @@ def run_task():
                         print(f">>> Matched course: {department} {course}")
                         j = i + 1
                         while j < len(table):
-                            # course_titles = table[j].find_all(class_="CourseTitle")
                             course_titles = table[j].find_all(attrs={'class': 'CourseTitle'})
                             if course_titles:
                                 i = j - 1
