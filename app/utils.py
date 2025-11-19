@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 import os, time, resend
-from app.db import get_db_conn
+from app.db import get_db_conn, release_db_conn
 import requests
 
 load_dotenv()
@@ -67,7 +67,7 @@ def notify_students(found: dict):
 
     conn.commit()
     cursor.close()
-    conn.close()
+    release_db_conn(conn)
 
 def get_watched_department():
     """ Returns a dictionary mapping departments to a list of watched course numbers """
@@ -85,7 +85,7 @@ def get_watched_department():
         else:
             department_courses[department] = [course_number]
     cursor.close()
-    conn.close()
+    release_db_conn(conn)
     return department_courses
 
 
@@ -160,7 +160,7 @@ def get_stats():
     stats['notifications_this_week'] = cursor.fetchone()[0]
 
     cursor.close()
-    conn.close()
+    release_db_conn(conn)
 
     return stats
 
@@ -228,7 +228,7 @@ def get_dashboard_data(email):
         })
 
     cursor.close()
-    conn.close()
+    release_db_conn(conn)
 
     return dashboard_data
 
@@ -244,7 +244,7 @@ def watching_one_class(email):
 
     count = cursor.fetchone()[0]
     cursor.close()
-    conn.close()
+    release_db_conn(conn)
 
     return count >= 1
 
@@ -283,9 +283,9 @@ def add_to_watching(email, department, courseNumber) -> bool:
     if cursor.rowcount == 0:
         conn.rollback()
         cursor.close()
-        conn.close()
+        release_db_conn(conn)
         return False
     conn.commit()
     cursor.close()
-    conn.close()
+    release_db_conn(conn)
     return True

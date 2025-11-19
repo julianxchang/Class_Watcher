@@ -1,5 +1,5 @@
 from flask_login import UserMixin
-from .db import get_db_conn
+from .db import get_db_conn, release_db_conn
 
 class User(UserMixin):
     def __init__(self, id, email, password_hash):
@@ -14,7 +14,7 @@ class User(UserMixin):
         cur.execute("SELECT id, email, password_hash FROM users WHERE id = %s", (user_id,))
         row = cur.fetchone()
         cur.close()
-        conn.close()
+        release_db_conn(conn)
 
         if row:
             return cls(id=row[0], email=row[1], password_hash=row[2])
@@ -28,7 +28,7 @@ class User(UserMixin):
         cur.execute("SELECT id, email, password_hash FROM users WHERE email = %s AND password_hash IS NOT NULL", (email,))
         row = cur.fetchone()
         cur.close()
-        conn.close()
+        release_db_conn(conn)
 
         if row:
             return cls(id=row[0], email=row[1], password_hash=row[2])
@@ -60,5 +60,5 @@ class User(UserMixin):
 
         conn.commit()
         cur.close()
-        conn.close()
+        release_db_conn(conn)
         return cls(id=user_id, email=email, password_hash=password_hash)

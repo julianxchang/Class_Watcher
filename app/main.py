@@ -1,6 +1,6 @@
 from flask import render_template, request
 from app import app, limiter
-from app.db import get_db_conn
+from app.db import get_db_conn, release_db_conn
 from app.utils import add_to_watching, send_confirmation_email, contact_message, get_stats, watching_one_class, add_to_watching, get_dashboard_data
 import re
 from flask_login import current_user, login_required
@@ -76,7 +76,7 @@ def remove_watch():
     """, (current_user.email, department, courseNumber))
     conn.commit()
     cur.close()
-    conn.close()
+    release_db_conn(conn)
 
     data = get_dashboard_data(current_user.email)
     return render_template('dashboard.html', watched_classes=data['watched_classes'], stats=data['stats'], notification_history=data['notification_history'])
