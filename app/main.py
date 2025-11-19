@@ -1,7 +1,7 @@
 from flask import render_template, request
 from app import app, limiter
 from app.db import get_db_conn
-from app.utils import add_to_watching, send_confirmation_email, contact_message, get_stats, watching_one_class, add_to_watching, get_watched_courses, get_user_stats, get_notification_history
+from app.utils import add_to_watching, send_confirmation_email, contact_message, get_stats, watching_one_class, add_to_watching, get_watched_courses, get_user_stats, get_notification_history, get_dashboard_data
 import re
 from flask_login import current_user, login_required
 
@@ -78,10 +78,8 @@ def remove_watch():
     cur.close()
     conn.close()
 
-    watched_classes = get_watched_courses(current_user.email)
-    user_stats = get_user_stats(current_user.email)
-    notification_history = get_notification_history(current_user.email)
-    return render_template('dashboard.html', watched_classes=watched_classes, stats=user_stats, notification_history=notification_history)
+    data = get_dashboard_data(current_user.email)
+    return render_template('dashboard.html', watched_classes=data['watched_classes'], stats=data['stats'], notification_history=data['notification_history'])
 
 @app.route('/send_email', methods=['POST'])
 def send_email():
@@ -114,7 +112,5 @@ def stats():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    watched_classes = get_watched_courses(current_user.email)
-    user_stats = get_user_stats(current_user.email)
-    notification_history = get_notification_history(current_user.email)
-    return render_template('dashboard.html', watched_classes=watched_classes, stats=user_stats, notification_history=notification_history)
+    data = get_dashboard_data(current_user.email)
+    return render_template('dashboard.html', watched_classes=data['watched_classes'], stats=data['stats'], notification_history=data['notification_history'])

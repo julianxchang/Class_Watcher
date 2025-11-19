@@ -161,7 +161,73 @@ def get_stats():
 
     return stats
 
-def get_user_stats(email):
+def get_dashboard_data(email):
+    """Get all dashboard data in a single database connection"""
+    conn = get_db_conn()
+    cursor = conn.cursor()
+
+    dashboard_data = {
+        'watched_classes': [],
+        'stats': {},
+        'notification_history': []
+    }
+
+    # Get watched courses
+    cursor.execute("""
+        SELECT w.department, w.course_number
+        FROM watching w
+        JOIN users u ON w.user_id = u.id
+        WHERE u.email = %s;
+    """, (email,))
+    dashboard_data['watched_classes'] = cursor.fetchall()
+
+    # Get user stats - Total notifications
+    cursor.execute("""
+        SELECT COUNT(*) FROM notifications_sent
+        WHERE email = %s;
+    """, (email,))
+    dashboard_data['stats']['total_notifications'] = cursor.fetchone()[0]
+
+    # Currently watching count
+    dashboard_data['stats']['currently_watching'] = len(dashboard_data['watched_classes'])
+
+    # Notifications this week
+    cursor.execute("""
+        SELECT COUNT(*) FROM notifications_sent
+        WHERE email = %s
+        AND sent_at >= CURRENT_DATE - INTERVAL '7 days';
+    """, (email,))
+    dashboard_data['stats']['notifications_this_week'] = cursor.fetchone()[0]
+
+    # Notifications today
+    cursor.execute("""
+        SELECT COUNT(*) FROM notifications_sent
+        WHERE email = %s
+        AND sent_at >= CURRENT_DATE;
+    """, (email,))
+    dashboard_data['stats']['notifications_today'] = cursor.fetchone()[0]
+
+    # Get notification history
+    cursor.execute("""
+        SELECT department, course_number, class_codes, sent_at
+        FROM notifications_sent
+        WHERE email = %s
+        ORDER BY sent_at DESC
+        LIMIT 10;
+    """, (email,))
+
+    for row in cursor.fetchall():
+        dashboard_data['notification_history'].append({
+            'department': row[0],
+            'course_number': row[1],
+            'class_codes': row[2],
+            'sent_at': row[3]
+        })
+
+    cursor.close()
+    conn.close()
+
+    return dashboard_data
     """Returns statistics for a specific user"""
     conn = get_db_conn()
     cursor = conn.cursor()
