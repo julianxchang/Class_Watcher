@@ -695,10 +695,73 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   padding: 15px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center;
+  position: relative;
 }
 
 .stat-item:last-of-type {
   border-bottom: none;
+}
+
+.stat-item-with-hover {
+  cursor: pointer;
+}
+
+.stat-item-with-hover:hover .stat-number {
+  color: #0af;
+  transition: color 0.2s;
+}
+
+.notif-history-tooltip {
+  display: none;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 100%;
+  margin-bottom: 10px;
+  background-color: #1a1c2e;
+  border: 1px solid #3a3d55;
+  border-radius: 8px;
+  padding: 15px;
+  width: 280px;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.stat-item-with-hover:hover .notif-history-tooltip {
+  display: block;
+}
+
+.tooltip-title {
+  color: #eee;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.notif-item {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.notif-item:last-child {
+  border-bottom: none;
+}
+
+.notif-class {
+  color: #08d;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.notif-date {
+  color: #888;
+  font-size: 11px;
 }
 
 .stat-number {
@@ -837,7 +900,6 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
 .unwatch-btn:hover {
   background-color: #d81f2f;
 }
-
 .unwatch-btn:active {
   background-color: #d1001f;
 }

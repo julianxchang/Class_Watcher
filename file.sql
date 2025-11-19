@@ -1,10 +1,10 @@
-CREATE TABLE users(
+CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
     email VARCHAR(120) NOT NULL UNIQUE,
     password_hash VARCHAR(255)
 );
 
-CREATE TABLE watching(
+CREATE TABLE IF NOT EXISTS watching(
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     department VarChar(30) NOT NULL,

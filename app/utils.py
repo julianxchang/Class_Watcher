@@ -204,6 +204,33 @@ def get_user_stats(email):
 
     return stats
 
+def get_notification_history(email):
+    """Returns notification history for a user"""
+    conn = get_db_conn()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT department, course_number, class_codes, sent_at
+        FROM notifications_sent
+        WHERE email = %s
+        ORDER BY sent_at DESC
+        LIMIT 10;
+    """, (email,))
+
+    history = []
+    for row in cursor.fetchall():
+        history.append({
+            'department': row[0],
+            'course_number': row[1],
+            'class_codes': row[2],
+            'sent_at': row[3]
+        })
+
+    cursor.close()
+    conn.close()
+
+    return history
+
 def watching_one_class(email):
     """Returns True if the current user is watching only one class"""
     conn = get_db_conn()

@@ -47,9 +47,20 @@ endblock %} {% block content %}
         <div class="stat-label">Classes Watching</div>
       </div>
 
-      <div class="stat-item">
+      <div class="stat-item stat-item-with-hover">
         <div class="stat-number">{{ stats.total_notifications }}</div>
         <div class="stat-label">Total Notifications</div>
+        {% if notification_history %}
+        <div class="notif-history-tooltip">
+          <div class="tooltip-title">Notification History</div>
+          {% for notif in notification_history %}
+          <div class="notif-item">
+            <div class="notif-class">{{ notif.department }} {{ notif.course_number }}</div>
+            <div class="notif-date">{{ notif.sent_at.strftime('%b %d, %Y %I:%M %p') }}</div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
       </div>
 
       <div class="stat-item">
@@ -63,5 +74,5 @@ endblock %} {% block content %}
       </div>
     </div>
   </div>
+  {% endblock %}
 </div>
-{% endblock %}

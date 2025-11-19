@@ -1,10 +1,10 @@
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
 from app import app
 from werkzeug.security import generate_password_hash, check_password_hash
-from .utils import get_user_stats, get_watched_courses
+from .utils import get_user_stats, get_watched_courses, get_notification_history
 
 @app.route('/login')
 def login():
@@ -14,9 +14,7 @@ def login():
 def login_post():
 
     if current_user.is_authenticated:
-        watched_classes = get_watched_courses(current_user.email)
-        user_stats = get_user_stats(current_user.email)
-        return render_template('dashboard.html', stats=user_stats, watched_classes=watched_classes)
+        return redirect(url_for('dashboard'))
 
     email = request.form.get('email').lower()
     password = request.form.get('password')
@@ -28,9 +26,7 @@ def login_post():
         return render_template('login.html', error='Please check your login details and try again.')
 
     login_user(user)
-    watched_classes = get_watched_courses(email)
-    user_stats = get_user_stats(email)
-    return render_template('dashboard.html', stats=user_stats, watched_classes=watched_classes)
+    return redirect(url_for('dashboard'))
 
 @app.route('/signup')
 def signup():
