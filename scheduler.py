@@ -12,7 +12,7 @@ def run_requests():
         subprocess.run(["python3", "worker.py"])
         i += 1
         if os.getenv('ENV') == 'prod':
-            time.sleep(300)  # check every 5 minutes
+            time.sleep(120)  # check every 2 minutes
         elif os.getenv('ENV') == 'dev':
             time.sleep(10)  # check every 10 seconds
 
