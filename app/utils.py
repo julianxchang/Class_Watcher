@@ -228,74 +228,6 @@ def get_dashboard_data(email):
     conn.close()
 
     return dashboard_data
-    """Returns statistics for a specific user"""
-    conn = get_db_conn()
-    cursor = conn.cursor()
-
-    stats = {}
-
-    # Total notifications sent to user
-    cursor.execute("""
-        SELECT COUNT(*) FROM notifications_sent
-        WHERE email = %s;
-    """, (email,))
-    stats['total_notifications'] = cursor.fetchone()[0]
-
-    # Currently watching count
-    cursor.execute("""
-        SELECT COUNT(*) FROM watching w
-        JOIN users u ON w.user_id = u.id
-        WHERE u.email = %s;
-    """, (email,))
-    stats['currently_watching'] = cursor.fetchone()[0]
-
-    # Notifications this week
-    cursor.execute("""
-        SELECT COUNT(*) FROM notifications_sent
-        WHERE email = %s
-        AND sent_at >= CURRENT_DATE - INTERVAL '7 days';
-    """, (email,))
-    stats['notifications_this_week'] = cursor.fetchone()[0]
-
-    # Notifications today
-    cursor.execute("""
-        SELECT COUNT(*) FROM notifications_sent
-        WHERE email = %s
-        AND sent_at >= CURRENT_DATE;
-    """, (email,))
-    stats['notifications_today'] = cursor.fetchone()[0]
-
-    cursor.close()
-    conn.close()
-
-    return stats
-
-def get_notification_history(email):
-    """Returns notification history for a user"""
-    conn = get_db_conn()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT department, course_number, class_codes, sent_at
-        FROM notifications_sent
-        WHERE email = %s
-        ORDER BY sent_at DESC
-        LIMIT 10;
-    """, (email,))
-
-    history = []
-    for row in cursor.fetchall():
-        history.append({
-            'department': row[0],
-            'course_number': row[1],
-            'class_codes': row[2],
-            'sent_at': row[3]
-        })
-
-    cursor.close()
-    conn.close()
-
-    return history
 
 def watching_one_class(email):
     """Returns True if the current user is watching only one class"""
@@ -354,20 +286,3 @@ def add_to_watching(email, department, courseNumber) -> bool:
     cursor.close()
     conn.close()
     return True
-
-def get_watched_courses(email):
-    """ Returns a list of courses that the user is watching """
-    conn = get_db_conn()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT w.department, w.course_number
-        FROM watching w
-        JOIN users u ON w.user_id = u.id
-        WHERE u.email = %s;
-    """, (email,))
-
-    courses = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return courses
