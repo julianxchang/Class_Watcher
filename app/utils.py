@@ -1,36 +1,48 @@
 from dotenv import load_dotenv
-import os, time, resend
+import os, time, requests, sib_api_v3_sdk
 from app.db import get_db_conn, release_db_conn
-import requests
 
 load_dotenv()
-resend.api_key = os.getenv("RESEND_API")
+configuration = sib_api_v3_sdk.Configuration()
+configuration.api_key['api-key'] = os.getenv("BREVO_API")
+
+api = sib_api_v3_sdk.TransactionalEmailsApi(
+    sib_api_v3_sdk.ApiClient(configuration)
+)
 
 def send_confirmation_email(email, department, courseNumber):
-    r = resend.Emails.send({
-    "from": "alerts@uciclasswatcher.com",
-    "to": email,
-    "subject": f"Successfully started watching {department} {courseNumber}",
-    "html": f"<p>You will be notified when a spot opens up!<br>Make sure to register as soon as you get the email as you won't be notified again for this course.<br><br>Best of luck!<br><br>- UCI Class Watcher</p>"})
-    print(f"Confirmation email sent to {email} for {department} {courseNumber}")
+    email = sib_api_v3_sdk.SendSmtpEmail(
+    sender={"email": "alerts@uciclasswatcher.com", "name": "UCI Class Watcher"},
+    to=[{"email": email}],
+    subject=f"Successfully started watching {department} {courseNumber}",
+    html_content=f"<p>You will be notified when a spot opens up!<br>Make sure to register as soon as you get the email as you won't be notified again for this course.<br><br>Best of luck!<br><br>- UCI Class Watcher</p>",
+    )
+
+    response = api.send_transac_email(email)
+
+    print(f"Confirmation email sent to {email} for {department} {courseNumber} with response {response}")
 
 def send_email(classCodes, department, courseNumber, email):
-    r = resend.Emails.send({
-    "from": "alerts@uciclasswatcher.com",
-    "to": email,
-    "subject": f"SPOT OPEN IN {department} {courseNumber}!",
-    "html": f"<p>Class code(s): {', '.join(classCodes)}<br>Enroll <a href='https://www.reg.uci.edu/cgi-bin/webreg-redirect.sh'>here</a><br><br>Don't forget to enroll in all coclasses!</p>"})
+    email = sib_api_v3_sdk.SendSmtpEmail(
+    sender={"email": "alerts@uciclasswatcher.com", "name": "UCI Class Watcher"},
+    to=[{"email": email}],
+    subject=f"SPOT OPEN IN {department} {courseNumber}!",
+    html_content=f"<p>Class code(s): {', '.join(classCodes)}<br>Enroll <a href='https://www.reg.uci.edu/cgi-bin/webreg-redirect.sh'>here</a><br><br>Don't forget to enroll in all coclasses!</p>",
+    )
 
-    print(f"Email sent to {email} for {department} {courseNumber}")
+    response = api.send_transac_email(email)
 
-def test_email(message):
-    r = resend.Emails.send({
-    "from": "alerts@uciclasswatcher.com",
-    "to": "uciclasswatcher@gmail.com",
-    "subject": "test email",
-    "html": f"<p>{message}</p>"})
+    print(f"Email sent to {email} for {department} {courseNumber} with response {response}")
 
-    print("Email sent to admin")
+def contact_message(email, message):
+    email = sib_api_v3_sdk.SendSmtpEmail(
+    sender={"email": "alerts@uciclasswatcher.com", "name": "UCI Class Watcher"},
+    to=[{"email": email}],
+    subject=f"Contact Form Message",
+    html_content=f"<p>New message from {email}:<br><p>{message}</p>",
+    )
+
+    api.send_transac_email(email)
 
 def notify_students(found: dict):
     """found is a dictionary where key is department, value is another dictionary where key is course number and value is list of open class codes
@@ -108,17 +120,6 @@ def fetch_department(department, term="2026-03"):
     except requests.RequestException as e:
         print(f"Error fetching department {department}: {e}")
         return None
-
-def contact_message(email, message):
-    load_dotenv()
-    resend.api_key = os.getenv("RESEND_API")
-
-    r = resend.Emails.send({
-    "from": "alerts@uciclasswatcher.com",
-    "to": "uciclasswatcher@gmail.com",
-    "subject": "Contact Form Message",
-    "html": f"<p>New message from {email}:<br><p>{message}</p>"})
-
 
 def get_stats():
     """Returns statistics about the application"""
