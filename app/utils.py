@@ -19,7 +19,7 @@ def send_confirmation_email(email, department, courseNumber):
     html_content=f"<p>You will be notified when a spot opens up!<br>Make sure to register as soon as you get the email as you won't be notified again for this course.<br><br>Best of luck!<br><br>- UCI Class Watcher</p>",
     )
 
-    response = api.send_transac_email(email)
+    api.send_transac_email(email)
 
     print(f"Confirmation email sent to {email} for {department} {courseNumber} with response {response}")
 
@@ -31,7 +31,7 @@ def send_email(classCodes, department, courseNumber, email):
     html_content=f"<p>Class code(s): {', '.join(classCodes)}<br>Enroll <a href='https://www.reg.uci.edu/cgi-bin/webreg-redirect.sh'>here</a><br><br>Don't forget to enroll in all coclasses!</p>",
     )
 
-    response = api.send_transac_email(email)
+    api.send_transac_email(email)
 
     print(f"Email sent to {email} for {department} {courseNumber} with response {response}")
 
