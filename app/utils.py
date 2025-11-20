@@ -12,38 +12,38 @@ api = sib_api_v3_sdk.TransactionalEmailsApi(
 )
 
 def send_confirmation_email(email, department, courseNumber):
-    email = sib_api_v3_sdk.SendSmtpEmail(
+    mail = sib_api_v3_sdk.SendSmtpEmail(
     sender={"email": "alerts@uciclasswatcher.com", "name": "UCI Class Watcher"},
     to=[{"email": email}],
     subject=f"Successfully started watching {department} {courseNumber}",
     html_content=f"<p>You will be notified when a spot opens up!<br>Make sure to register as soon as you get the email as you won't be notified again for this course.<br><br>Best of luck!<br><br>- UCI Class Watcher</p>",
     )
 
-    api.send_transac_email(email)
+    api.send_transac_email(mail)
 
     print(f"Confirmation email sent to {email} for {department} {courseNumber}")
 
 def send_email(classCodes, department, courseNumber, email):
-    email = sib_api_v3_sdk.SendSmtpEmail(
+    mail = sib_api_v3_sdk.SendSmtpEmail(
     sender={"email": "alerts@uciclasswatcher.com", "name": "UCI Class Watcher"},
     to=[{"email": email}],
     subject=f"SPOT OPEN IN {department} {courseNumber}!",
     html_content=f"<p>Class code(s): {', '.join(classCodes)}<br>Enroll <a href='https://www.reg.uci.edu/cgi-bin/webreg-redirect.sh'>here</a><br><br>Don't forget to enroll in all coclasses!</p>",
     )
 
-    api.send_transac_email(email)
+    api.send_transac_email(mail)
 
     print(f"Email sent to {email} for {department} {courseNumber}")
 
 def contact_message(email, message):
-    email = sib_api_v3_sdk.SendSmtpEmail(
+    mail = sib_api_v3_sdk.SendSmtpEmail(
     sender={"email": "alerts@uciclasswatcher.com", "name": "UCI Class Watcher"},
     to=[{"email": email}],
     subject=f"Contact Form Message",
     html_content=f"<p>New message from {email}:<br><p>{message}</p>",
     )
 
-    api.send_transac_email(email)
+    api.send_transac_email(mail)
 
 def notify_students(found: dict):
     """found is a dictionary where key is department, value is another dictionary where key is course number and value is list of open class codes
