@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
-import os, time, requests, sib_api_v3_sdk
+import os, time, sib_api_v3_sdk
 from app.db import get_db_conn, release_db_conn
+import requests
 
 load_dotenv()
 configuration = sib_api_v3_sdk.Configuration()
