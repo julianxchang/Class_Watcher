@@ -21,7 +21,7 @@ def send_confirmation_email(email, department, courseNumber):
 
     api.send_transac_email(email)
 
-    print(f"Confirmation email sent to {email} for {department} {courseNumber} with response {response}")
+    print(f"Confirmation email sent to {email} for {department} {courseNumber}")
 
 def send_email(classCodes, department, courseNumber, email):
     email = sib_api_v3_sdk.SendSmtpEmail(
@@ -33,7 +33,7 @@ def send_email(classCodes, department, courseNumber, email):
 
     api.send_transac_email(email)
 
-    print(f"Email sent to {email} for {department} {courseNumber} with response {response}")
+    print(f"Email sent to {email} for {department} {courseNumber}")
 
 def contact_message(email, message):
     email = sib_api_v3_sdk.SendSmtpEmail(
