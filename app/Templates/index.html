@@ -61,9 +61,25 @@ endblock %} {% block content %}
         name="course_number"
         required
       />
+      <span
+        id="course-info-icon"
+        tabindex="0"
+        aria-label="Info"
+        class="info-icon"
+        >&#9432;
+        <span id="course-info-tooltip" class="info-tooltip">
+          <b>Course Number:</b> e.g., <i>33</i> for ICS 33<br />
+          <b>Course Code:</b> 5-digit code, e.g., <i>35615</i><br />
+          <br />
+          <b>Course Number</b>: Get notified when any lecture section for that
+          course opens (not FULL).<br />
+          <b>Course Code</b>: Get notified only when that specific section
+          (code) opens (not FULL).<br />
+        </span>
+      </span>
       <div class="cut coursenum-cut"></div>
       <label for="course_number" class="placeholder"
-        >Course Number (e.g., 33 for ICS 33)</label
+        >Course Number or Course Code</label
       >
     </div>
     <button class="submit" type="submit" value="Start Watching" name="action">
@@ -76,6 +92,22 @@ endblock %} {% block content %}
 </form>
 
 <script>
+  const infoIcon = document.getElementById("course-info-icon");
+  const infoTooltip = document.getElementById("course-info-tooltip");
+  if (infoIcon && infoTooltip) {
+    infoIcon.addEventListener("mouseenter", function () {
+      infoTooltip.classList.add("show");
+    });
+    infoIcon.addEventListener("mouseleave", function () {
+      infoTooltip.classList.remove("show");
+    });
+    infoIcon.addEventListener("focus", function () {
+      infoTooltip.classList.add("show");
+    });
+    infoIcon.addEventListener("blur", function () {
+      infoTooltip.classList.remove("show");
+    });
+  }
   const departments = [
     { value: "AC ENG", label: "AC ENG - Academic English" },
     { value: "AFAM", label: "AFAM - African American Studies" },

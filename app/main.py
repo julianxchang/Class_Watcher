@@ -1,7 +1,7 @@
 from flask import render_template, request
 from app import app, limiter
 from app.db import get_db_conn, release_db_conn
-from app.utils import add_to_watching, send_confirmation_email, contact_message, get_stats, watching_one_class, add_to_watching, get_dashboard_data
+from app.utils import add_to_watching, send_confirmation_email, contact_message, get_stats, add_to_watching, get_dashboard_data, watching_one_class_and_no_account
 import re
 from flask_login import current_user, login_required
 
@@ -48,7 +48,7 @@ def add_watch():
             return render_template('index.html', error="Invalid department")
 
         # if user is not signed up, they can only watch one class
-        if not current_user.is_authenticated and watching_one_class(email):
+        if watching_one_class_and_no_account(email):
             return render_template('index.html', error="Sign up to watch more than 1 class!")
 
         if(not add_to_watching(email, department, courseNumber)):

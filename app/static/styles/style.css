@@ -1,3 +1,68 @@
+.input-container.ic3 {
+  position: relative;
+}
+.info-icon {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #7daaff;
+  cursor: pointer;
+  z-index: 2;
+  background: none;
+  border: none;
+  outline: none;
+  pointer-events: auto;
+}
+.info-tooltip {
+  display: none;
+  position: absolute;
+  left: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: #22223a;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  width: 270px;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}
+.info-tooltip.show {
+  display: block;
+}
+.input-with-info {
+  position: relative;
+  align-items: center;
+  width: 100%;
+}
+.input-with-info {
+  display: flex;
+  width: 100%;
+}
+.info-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #7daaff;
+  cursor: pointer;
+  z-index: 2;
+  background: none;
+  border: none;
+  outline: none;
+}
+.info-icon {
+  pointer-events: auto;
+}
+.info-icon:focus {
+  color: #08d;
+}
+
 html {
   box-sizing: border-box;
   font-family: sans-serif;

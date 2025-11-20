@@ -8,7 +8,7 @@ resend.api_key = os.getenv("RESEND_API")
 
 def send_confirmation_email(email, department, courseNumber):
     r = resend.Emails.send({
-    "from": "noreply@uciclasswatcher.com",
+    "from": "alerts@uciclasswatcher.com",
     "to": email,
     "subject": f"Successfully started watching {department} {courseNumber}",
     "html": f"<p>You will be notified when a spot opens up!<br>Make sure to register as soon as you get the email as you won't be notified again for this course.<br><br>Best of luck!<br><br>- UCI Class Watcher</p>"})
@@ -16,7 +16,7 @@ def send_confirmation_email(email, department, courseNumber):
 
 def send_email(classCodes, department, courseNumber, email):
     r = resend.Emails.send({
-    "from": "noreply@uciclasswatcher.com",
+    "from": "alerts@uciclasswatcher.com",
     "to": email,
     "subject": f"SPOT OPEN IN {department} {courseNumber}!",
     "html": f"<p>Class code(s): {', '.join(classCodes)}<br>Enroll <a href='https://www.reg.uci.edu/cgi-bin/webreg-redirect.sh'>here</a><br><br>Don't forget to enroll in all coclasses!</p>"})
@@ -25,7 +25,7 @@ def send_email(classCodes, department, courseNumber, email):
 
 def test_email(message):
     r = resend.Emails.send({
-    "from": "noreply@uciclasswatcher.com",
+    "from": "alerts@uciclasswatcher.com",
     "to": "uciclasswatcher@gmail.com",
     "subject": "test email",
     "html": f"<p>{message}</p>"})
@@ -114,7 +114,7 @@ def contact_message(email, message):
     resend.api_key = os.getenv("RESEND_API")
 
     r = resend.Emails.send({
-    "from": "noreply@uciclasswatcher.com",
+    "from": "alerts@uciclasswatcher.com",
     "to": "uciclasswatcher@gmail.com",
     "subject": "Contact Form Message",
     "html": f"<p>New message from {email}:<br><p>{message}</p>"})
@@ -232,14 +232,14 @@ def get_dashboard_data(email):
 
     return dashboard_data
 
-def watching_one_class(email):
-    """Returns True if the current user is watching only one class"""
+def watching_one_class_and_no_account(email):
+    """Returns True if the current user doesn't have an account and is already watching a class"""
     conn = get_db_conn()
     cursor = conn.cursor()
 
     cursor.execute("""
         SELECT COUNT(*) FROM watching w, users u
-        WHERE w.user_id = u.id AND u.email = %s;
+        WHERE w.user_id = u.id AND u.email = %s AND u.password_hash IS NULL;
     """, (email,))
 
     count = cursor.fetchone()[0]
