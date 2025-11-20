@@ -38,7 +38,7 @@ def send_email(classCodes, department, courseNumber, email):
 def contact_message(email, message):
     mail = sib_api_v3_sdk.SendSmtpEmail(
     sender={"email": "alerts@uciclasswatcher.com", "name": "UCI Class Watcher"},
-    to=[{"email": email}],
+    to=[{"email": "uciclasswatcher@gmail.com"}],
     subject=f"Contact Form Message",
     html_content=f"<p>New message from {email}:<br><p>{message}</p>",
     )

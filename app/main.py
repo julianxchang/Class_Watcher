@@ -54,6 +54,8 @@ def add_watch():
         if(not add_to_watching(email, department, courseNumber)):
             return render_template('index.html', error="You are already watching this class!")
 
+        print(f"{email} clicked submit with {department} {courseNumber}")
+
         send_confirmation_email(email, department, courseNumber)
 
         print(f"{email} started watching {department} {courseNumber}")

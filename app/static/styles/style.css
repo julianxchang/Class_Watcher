@@ -366,6 +366,10 @@ select.input option {
   width: 47px;
 }
 
+.email-optional-cut {
+  width: 95px;
+}
+
 .password-cut {
   width: 68px;
 }
@@ -383,7 +387,7 @@ select.input option {
 }
 
 .coursenum-cut {
-  width: 188px;
+  width: 172px;
 }
 .input:focus ~ .cut,
 .input:not(:placeholder-shown) ~ .cut {
