@@ -44,6 +44,8 @@ def run_task():
                         continue
 
                     class_code = rows[0].text
+                    if class_code in watched_departments[department]:
+                        print(f"Matched CLASS CODE: {class_code}")
                     class_type = rows[1].text
                     status = rows[-1].text
 
