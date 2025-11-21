@@ -214,7 +214,8 @@ def get_dashboard_data(email):
 
     # Get notification history
     cursor.execute("""
-        SELECT department, course_number, class_codes, sent_at
+        SELECT department, course_number, class_codes,
+               sent_at AT TIME ZONE 'UTC' AT TIME ZONE 'America/Los_Angeles' AS sent_at_la
         FROM notifications_sent
         WHERE email = %s
         ORDER BY sent_at DESC
@@ -234,7 +235,7 @@ def get_dashboard_data(email):
 
     return dashboard_data
 
-def get_admin_data(email):
+def get_admin_data():
     """Get all admin dashboard data in a single database connection
     Data includes 10 recent notifications and recent entries into watching table"""
     conn = get_db_conn()
@@ -246,7 +247,8 @@ def get_admin_data(email):
     }
 
     cursor.execute("""
-        SELECT email, department, course_number, class_codes, sent_at
+        SELECT email, department, course_number, class_codes,
+               sent_at AT TIME ZONE 'UTC' AT TIME ZONE 'America/Los_Angeles' AS sent_at_la
         FROM notifications_sent
         ORDER BY sent_at DESC
         LIMIT 10;
@@ -254,7 +256,8 @@ def get_admin_data(email):
     admin_data['recent_notifications'] = cursor.fetchall()
 
     cursor.execute("""
-        SELECT users.email, watching.department, watching.course_number, watching.added_at
+        SELECT users.email, watching.department, watching.course_number,
+               watching.added_at AT TIME ZONE 'UTC' AT TIME ZONE 'America/Los_Angeles' AS added_la
         FROM watching
         JOIN users ON watching.user_id = users.id
         ORDER BY watching.added_at DESC
