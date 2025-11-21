@@ -575,7 +575,9 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
 
 .stats-container {
   display: flex;
+  gap: 30px;
   width: 100%;
+  align-items: flex-start;
 }
 
 .stats-left,
@@ -899,4 +901,25 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
 }
 .unwatch-btn:active {
   background-color: #d1001f;
+}
+
+.stat-item {
+  width: 100%;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  position: relative;
+}
+
+.stat-item:last-of-type {
+  border-bottom: none;
+}
+
+.stat-item-with-hover {
+  cursor: pointer;
+}
+
+.stat-item-with-hover:hover .stat-number {
+  color: #0af;
+  transition: color 0.2s;
 }
