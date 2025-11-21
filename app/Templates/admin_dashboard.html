@@ -1,0 +1,43 @@
+{% extends "base.html" %} {% block title %}Admin Dashboard - UCI Class Watcher{%
+endblock %} {% block content %}
+<div class="form form-stats">
+  <div class="title">Admin Dashboard</div>
+  <div class="stats-container">
+    <div class="stats-section">
+      <div class="subtitle">Recent Notifications</div>
+      <div class="admin-list">
+        {% if admin_data.recent_notifications %} {% for notif in
+        admin_data.recent_notifications %}
+        <div class="admin-item">
+          <span class="admin-email">{{ notif[0] }}</span><br />
+          <span class="admin-class">{{ notif[1] }} {{ notif[2] }}</span><br />
+          <span class="admin-codes">Codes: {{ notif[3] }}</span><br />
+          <span class="notif-date">
+            {{ notif[4].strftime('%b %d, %Y %I:%M %p') }}
+          </span>
+        </div>
+        {% endfor %} {% else %}
+        <div class="admin-empty">No notifications found.</div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="stats-section">
+      <div class="subtitle">Recent Watching Entries</div>
+      <div class="admin-list">
+        {% if admin_data.recent_watching %} {% for watch in
+        admin_data.recent_watching %}
+        <div class="admin-item">
+          <span class="admin-email">{{ watch[0] }}</span><br />
+          <span class="admin-class">{{ watch[1] }} {{ watch[2] }}</span><br />
+          <span class="admin-date">
+            Added: {{ watch[3].strftime('%b %d, %Y %I:%M %p') }}
+          </span>
+        </div>
+        {% endfor %} {% else %}
+        <div class="admin-empty">No watching entries found.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

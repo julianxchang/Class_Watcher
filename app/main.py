@@ -41,7 +41,7 @@ def add_watch():
         department = request.form.get('department')
         courseNumber = request.form.get('course_number').upper()
 
-        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        if not re.match(r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$", email):
             return render_template('index.html', error="Invalid email address")
 
         if department not in VALID_DEPARTMENTS:
@@ -116,7 +116,7 @@ def stats():
 def dashboard():
     email = current_user.email
     if email == "uciclasswatcher@gmail.com":
-        admin_data = get_admin_data(email)
+        admin_data = get_admin_data()
         return render_template('admin_dashboard.html', admin_data=admin_data)
     data = get_dashboard_data(email)
     return render_template('dashboard.html', watched_classes=data['watched_classes'], stats=data['stats'], notification_history=data['notification_history'])
