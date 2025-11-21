@@ -574,46 +574,21 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
 }
 
 .stats-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
+  display: flex;
   width: 100%;
 }
 
-.stats-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.stats-title {
-  color: #eee;
-  font-size: 42px;
-  font-weight: 700;
-  margin: 0 0 10px 0;
-}
-
-.stats-subtitle {
-  color: #aaa;
-  font-size: 18px;
-  margin: 0;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-bottom: 40px;
-}
-
-.stat-card {
-  background: linear-gradient(135deg, #1a1d2e 0%, #15172b 100%);
-  border-radius: 16px;
-  padding: 30px;
+.stats-left,
+.stats-right {
+  flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 20px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stats-header {
+  text-align: left;
+  margin-bottom: 40px;
 }
 
 .stat-card.highlight {
@@ -639,7 +614,7 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   color: #08d;
   font-size: 36px;
   font-weight: 700;
-  margin: 0 0 5px 0;
+  margin: 10px;
 }
 
 .successful-class {
@@ -662,6 +637,9 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   border-radius: 16px;
   padding: 30px;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .section-title {
@@ -669,22 +647,26 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   font-size: 24px;
   font-weight: 600;
   margin: 0 0 20px 0;
+  text-align: center;
 }
 
 .courses-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  align-items: center;
 }
 
 .course-item {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  gap: 32px;
   padding: 15px 20px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 10px;
   transition: background 0.3s ease;
+  min-width: 320px;
 }
 
 .course-item:hover {
@@ -744,7 +726,7 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
 }
 
 /* Admin Dashboard Styles */
-.stats-container {
+.admin-stats-container {
   display: flex;
   flex-direction: row;
   gap: 40px;
@@ -772,7 +754,7 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   width: 100%;
 }
 .admin-item {
-  margin-bottom: 18px;
+  margin: 30px;
   padding-bottom: 10px;
   border-bottom: 1px solid #222;
 }
@@ -794,6 +776,15 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
 .admin-empty {
   color: #888;
 }
+
+.admin-email,
+.admin-class,
+.admin-codes,
+.admin-date,
+.notif-date {
+  display: block;
+}
+
 @media (max-width: 900px) {
   .stats-container {
     flex-direction: column;
@@ -840,4 +831,29 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
 .autocomplete-item.selected {
   background-color: #08d;
   color: #fff;
+}
+
+.course-stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 250px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.course-stat-item:last-child {
+  border-bottom: none;
+}
+
+.course-name {
+  color: #eee;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.course-count {
+  color: #08d;
+  font-size: 14px;
+  font-weight: 600;
 }
