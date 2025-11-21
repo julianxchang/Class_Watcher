@@ -1,7 +1,7 @@
 from flask import render_template, request
 from app import app, limiter
 from app.db import get_db_conn, release_db_conn
-from app.utils import add_to_watching, contact_message, get_stats, add_to_watching, send_confirmation_email, get_dashboard_data, watching_one_class_and_no_account
+from app.utils import add_to_watching, contact_message, get_stats, add_to_watching, send_confirmation_email, get_dashboard_data, get_admin_data, watching_one_class_and_no_account
 import re
 from flask_login import current_user, login_required
 
@@ -114,5 +114,9 @@ def stats():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    data = get_dashboard_data(current_user.email)
+    email = current_user.email
+    if email == "uciclasswatcher@gmail.com":
+        admin_data = get_admin_data(email)
+        return render_template('admin_dashboard.html', admin_data=admin_data)
+    data = get_dashboard_data(email)
     return render_template('dashboard.html', watched_classes=data['watched_classes'], stats=data['stats'], notification_history=data['notification_history'])

@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS watching(
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     department VarChar(30) NOT NULL,
-    course_number VARCHAR(30) NOT NULL
+    course_number VARCHAR(30) NOT NULL,
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS notifications_sent (

@@ -234,6 +234,38 @@ def get_dashboard_data(email):
 
     return dashboard_data
 
+def get_admin_data(email):
+    """Get all admin dashboard data in a single database connection
+    Data includes 10 recent notifications and recent entries into watching table"""
+    conn = get_db_conn()
+    cursor = conn.cursor()
+
+    admin_data = {
+        'recent_notifications': [],
+        'recent_watching': []
+    }
+
+    cursor.execute("""
+        SELECT email, department, course_number, class_codes, sent_at
+        FROM notifications_sent
+        ORDER BY sent_at DESC
+        LIMIT 10;
+    """)
+    admin_data['recent_notifications'] = cursor.fetchall()
+
+    cursor.execute("""
+        SELECT users.email, watching.department, watching.course_number, watching.added_at
+        FROM watching
+        JOIN users ON watching.user_id = users.id
+        ORDER BY watching.added_at DESC
+        LIMIT 10;
+    """)
+    admin_data['recent_watching'] = cursor.fetchall()
+
+    cursor.close()
+    release_db_conn(conn)
+    return admin_data
+
 def watching_one_class_and_no_account(email):
     """Returns True if the current user doesn't have an account and is already watching a class"""
     conn = get_db_conn()
