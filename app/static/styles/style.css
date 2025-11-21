@@ -857,3 +857,46 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   font-size: 14px;
   font-weight: 600;
 }
+
+.watched-classes-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.watched-class-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.class-info {
+  color: #eee;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.unwatch-btn {
+  background-color: #ff5656;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  transition: background-color 0.3s ease;
+}
+
+.unwatch-btn:hover {
+  background-color: #d81f2f;
+}
+.unwatch-btn:active {
+  background-color: #d1001f;
+}
