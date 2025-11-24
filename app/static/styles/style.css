@@ -799,7 +799,6 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   }
 }
 
-/* Autocomplete dropdown (restored) */
 .autocomplete-dropdown {
   display: none;
   position: absolute;
