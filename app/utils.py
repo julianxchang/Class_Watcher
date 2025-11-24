@@ -6,6 +6,8 @@ import requests
 load_dotenv()
 configuration = sib_api_v3_sdk.Configuration()
 configuration.api_key['api-key'] = os.getenv("BREVO_API")
+betterstack_key = os.getenv("BETTERSTACK_API")
+heartbeat_api_url = os.getenv("HEARTBEAT_API_URL")
 
 api = sib_api_v3_sdk.TransactionalEmailsApi(
     sib_api_v3_sdk.ApiClient(configuration)
@@ -326,3 +328,35 @@ def add_to_watching(email, department, courseNumber) -> bool:
     cursor.close()
     release_db_conn(conn)
     return True
+
+def get_last_scrape():
+    conn = get_db_conn()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT last_scrape AT TIME ZONE 'UTC' AT TIME ZONE 'America/Los_Angeles'
+        FROM system_status
+        WHERE id = 1;
+    """)
+    row = cur.fetchone()
+    release_db_conn(conn)
+    return row[0].strftime("%Y-%m-%d %I:%M %p") if row else None
+
+def get_system_status():
+    url = heartbeat_api_url
+    headers = {"Authorization": f"Bearer {betterstack_key}"}
+    data = requests.get(url, headers=headers).json()["data"]
+    status = data["attributes"]["status"]
+
+    if status == "up":
+        emoji = "🟢"; msg = "All systems operational"
+    elif status == "down":
+        emoji = "🔴"; msg = "System outage"
+    else:
+        emoji = "🟡"; msg = "Monitor paused"
+
+    return {
+        "status": status,
+        "emoji": emoji,
+        "message": msg,
+        "last_scrape": get_last_scrape() or "N/A"
+    }

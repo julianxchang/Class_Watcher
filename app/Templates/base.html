@@ -38,10 +38,38 @@
       </nav>
     </header>
     <main>{% block content %} {% endblock %}</main>
-    <footer>
-      <a href="{{ url_for('changelog') }}" class="changelog-link">
-        <h1>Changlog</h1>
+    <footer class="footer">
+      <div class="footer-left"></div>
+      <a
+        href="https://uciclasswatcher.betteruptime.com/"
+        class="footer-center-link"
+        target="_blank"
+      >
+        <div class="footer-center">
+          <span class="system-status">
+            {% if system_status.status %}
+            <span class="status-dot">{{ system_status.emoji }}</span>
+            <span class="status-text">{{ system_status.message }}</span>
+            {% else %}
+            <span class="status-dot">🔴</span>
+            <span class="status-text">Better Stack Down</span>
+            {% endif %}
+          </span>
+
+          <span class="separator">|</span>
+
+          <span class="last-scrape">
+            Last checked WebReg at: {{ system_status.last_scrape if
+            system_status.last_scrape else "N/A" }}
+          </span>
+        </div>
       </a>
+
+      <div class="footer-right">
+        <a href="{{ url_for('changelog') }}" class="footer-right-link"
+          >Changelog</a
+        >
+      </div>
     </footer>
     <script>
       const hamburger = document.getElementById("hamburger");

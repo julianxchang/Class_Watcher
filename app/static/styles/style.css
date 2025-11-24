@@ -106,6 +106,7 @@ main {
   justify-content: center;
   align-items: center;
 }
+
 nav,
 footer {
   width: 100%;
@@ -535,12 +536,12 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
   text-decoration: none;
 }
 
-.changelog-link {
+/* .changelog-link {
   color: rgb(0, 110, 255);
   text-decoration: none;
   font-size: 5px;
   font-weight: 400;
-}
+} */
 
 .changelog {
   list-style: none;
@@ -974,4 +975,107 @@ select.input:not([data-selected="true"]):not(:focus) ~ .placeholder {
 .notif-date {
   color: #888;
   font-size: 11px;
+}
+
+footer.footer {
+  width: 100vw !important;
+  max-width: 100% !important;
+  text-align: left !important;
+}
+
+.footer-center-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.footer-left {
+  flex: 1;
+}
+
+.footer-center {
+  position: relative;
+  margin: 0 auto;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.footer-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.footer-center:hover {
+  background: rgba(255, 255, 255, 0.05);
+  opacity: 0.9;
+}
+
+.footer-right-link {
+  color: #7daaff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 12px;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.footer-right-link:hover {
+  color: #aaccff;
+  opacity: 0.9;
+}
+
+.separator {
+  margin: 0 8px;
+  color: #666;
+  font-weight: 600;
+}
+
+/* Footer container */
+footer.footer {
+  background-color: #111;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #222;
+  position: relative;
+}
+
+/* Mobile: inline row layout */
+@media (max-width: 600px) {
+  footer.footer {
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .separator {
+    display: none; /* hide the | */
+  }
+
+  .last-scrape {
+    display: block; /* force new line */
+    margin-top: 4px; /* small spacing */
+    font-size: 12px; /* optional: make it slightly smaller */
+  }
+
+  .system-status {
+    display: block; /* also ensure it's on its own line */
+  }
+
+  .footer-center {
+    position: static;
+    transform: none;
+  }
+
+  .footer-center-link {
+    width: 100%;
+    text-align: center;
+  }
+
+  .footer-right {
+    margin-left: 0;
+  }
 }

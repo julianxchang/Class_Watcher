@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from app.utils import get_system_status
 
 load_dotenv()
 
@@ -23,6 +24,11 @@ limiter = Limiter(
     default_limits=["200 per day", "50 per hour"],
     storage_uri="memory://"
 )
+
+@app.context_processor
+def inject_system_status():
+    status = get_system_status()
+    return dict(system_status=status)
 
 from app.models import User
 

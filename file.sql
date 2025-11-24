@@ -21,5 +21,12 @@ CREATE TABLE IF NOT EXISTS notifications_sent (
     sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS system_status (
+    id SERIAL PRIMARY KEY,
+    last_scrape TIMESTAMP
+);
+
+INSERT INTO system_status (last_scrape) VALUES (NOW());
+
 CREATE UNIQUE INDEX IF NOT EXISTS unique_watching ON watching (user_id, course_number, department);
 CREATE INDEX IF NOT EXISTS idx_notifications_sent_at ON notifications_sent(sent_at);
