@@ -35,6 +35,7 @@ def index():
     return render_template('index.html')
 
 @app.route('/add_watch', methods=['GET', 'POST'])
+@limiter.limit("10 per hour", methods=["POST"])
 def add_watch():
     if request.method == 'POST':
         email = request.form.get('email').lower()
