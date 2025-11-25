@@ -323,7 +323,6 @@ def add_to_watching(email, department, courseNumber) -> bool:
 
     # Check if the row was actually inserted
     if cursor.rowcount == 0:
-        conn.rollback()
         cursor.close()
         release_db_conn(conn)
         return False
