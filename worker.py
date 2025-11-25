@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import re, os, time
-from app.utils import get_watched_department, notify_students, fetch_department
+from app.utils import get_watched_department, notify_students, fetch_department, update_system_status
 
 def run_task():
     pid = os.getpid()
@@ -74,6 +74,9 @@ def run_task():
             i += 1
     if found:
         notify_students(found)
+
+    update_system_status()
+
     print(f"[PID {pid}] Finished check_courses task.")
 
 if __name__ == "__main__":

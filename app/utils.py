@@ -8,6 +8,7 @@ configuration = sib_api_v3_sdk.Configuration()
 configuration.api_key['api-key'] = os.getenv("BREVO_API")
 betterstack_key = os.getenv("BETTERSTACK_API")
 heartbeat_api_url = os.getenv("HEARTBEAT_API_URL")
+HEARTBEAT_URL = os.getenv("HEARTBEAT_URL")
 
 api = sib_api_v3_sdk.TransactionalEmailsApi(
     sib_api_v3_sdk.ApiClient(configuration)
@@ -56,8 +57,9 @@ def notify_students(found: dict):
 
     for department, courses in found.items():
         for courseNumber, classCodes in courses.items():
+            # get the emails of students watching this course
             cursor.execute("""
-                SELECT users.id, users.email, users.password_hash
+                SELECT users.email
                 FROM watching
                 JOIN users ON watching.user_id = users.id
                 WHERE watching.department = %s AND watching.course_number = %s;
@@ -65,15 +67,16 @@ def notify_students(found: dict):
 
             rows = cursor.fetchall()
             for row in rows:
-                send_email(classCodes, department, courseNumber, row[1])
+                send_email(classCodes, department, courseNumber, row[0])
                 time.sleep(1)
 
-                # update notification table
+                # update notification table with sent email
                 cursor.execute("""
                     INSERT INTO notifications_sent (email, department, course_number, class_codes)
                     VALUES (%s, %s, %s, %s);
-                """, (row[1], department, courseNumber, ', '.join(classCodes)))
+                """, (row[0], department, courseNumber, ', '.join(classCodes)))
 
+            # remove all students watching this course
             cursor.execute("""
                 DELETE FROM watching
                 WHERE department = %s and course_number = %s;
@@ -360,3 +363,22 @@ def get_system_status():
         "message": msg,
         "last_scrape": get_last_scrape() or "N/A"
     }
+
+def update_system_status():
+    # send heartbeat
+    try:
+        requests.get(HEARTBEAT_URL, timeout=5)
+        print("Heartbeat sent.")
+    except Exception as e:
+        print("Failed to send heartbeat:", e)
+
+    # update last scraped time in db
+    try:
+        conn = get_db_conn()
+        cur = conn.cursor()
+        cur.execute("UPDATE system_status SET last_scrape = NOW() WHERE id = 1;")
+        conn.commit()
+        release_db_conn(conn)
+        print("Updated last scrape time in database.")
+    except Exception as e:
+        print("Failed to update last scrape time:", e)
