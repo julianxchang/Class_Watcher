@@ -9,10 +9,13 @@ configuration.api_key['api-key'] = os.getenv("BREVO_API")
 betterstack_key = os.getenv("BETTERSTACK_API")
 heartbeat_api_url = os.getenv("HEARTBEAT_API_URL")
 HEARTBEAT_URL = os.getenv("HEARTBEAT_URL")
-
 api = sib_api_v3_sdk.TransactionalEmailsApi(
     sib_api_v3_sdk.ApiClient(configuration)
 )
+SYSTEM_STATUS_CACHE = {
+    "data": None,
+    "last_update": 0
+}
 
 def send_confirmation_email(email, department, courseNumber):
     mail = sib_api_v3_sdk.SendSmtpEmail(
@@ -344,24 +347,33 @@ def get_last_scrape():
     return row[0].strftime("%Y-%m-%d %I:%M %p") if row else None
 
 def get_system_status():
-    url = heartbeat_api_url
-    headers = {"Authorization": f"Bearer {betterstack_key}"}
-    data = requests.get(url, headers=headers).json()["data"]
-    status = data["attributes"]["status"]
+    try:
+        url = heartbeat_api_url
+        headers = {"Authorization": f"Bearer {betterstack_key}"}
+        data = requests.get(url, headers=headers, timeout=3).json()["data"]
+        status = data["attributes"]["status"]
 
-    if status == "up":
-        emoji = "🟢"; msg = "All systems operational"
-    elif status == "down":
-        emoji = "🔴"; msg = "System outage"
-    else:
-        emoji = "🟡"; msg = "Monitor paused"
+        if status == "up":
+            emoji = "🟢"; msg = "All systems operational"
+        elif status == "down":
+            emoji = "🔴"; msg = "System outage"
+        else:
+            emoji = "🟡"; msg = "Monitor paused"
 
-    return {
-        "status": status,
-        "emoji": emoji,
-        "message": msg,
-        "last_scrape": get_last_scrape() or "N/A"
-    }
+        return {
+            "status": status,
+            "emoji": emoji,
+            "message": msg,
+            "last_scrape": get_last_scrape() or "N/A"
+        }
+    except Exception as e:
+        print("Failed to get system status:", e)
+        return {
+            "status": "unknown",
+            "emoji": "🟡",
+            "message": "Unable to retrieve system status",
+            "last_scrape": get_last_scrape() or "N/A"
+        }
 
 def update_system_status():
     # send heartbeat
