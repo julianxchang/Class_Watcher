@@ -110,7 +110,7 @@ def get_watched_department():
     return department_courses
 
 
-def fetch_department(department, term="2026-03"):
+def fetch_department(department, term="2026-92"):
     url = "https://www.reg.uci.edu/perl/WebSoc"
     payload = {
         "YearTerm": term,
